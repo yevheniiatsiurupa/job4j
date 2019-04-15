@@ -25,6 +25,7 @@ public class ArrayChar {
             //сравнение элементов value и data.
             if (value[i] != data[i]) {
                 result = false;
+                break;
             }
         }
         return result;
