@@ -12,14 +12,16 @@ public class BubbleSort {
      * @return array отсортированный массив.
      */
     public int[] sort(int[] array) {
+        int countSort = 0;
         for (int i = 0; i != array.length - 1; i++) {
-            for (int j = 0; j != array.length - 1; j++) {
+            for (int j = 0; j != array.length - 1 - countSort; j++) {
                 if (array[j] > array[j + 1]) {
                     int temp = array[j];
                     array[j] = array[j + 1];
                     array[j + 1] = temp;
                 }
             }
+            countSort++;
         }
         return array;
     }
