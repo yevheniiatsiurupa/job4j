@@ -13,16 +13,14 @@ public class ArrayChar {
 
     /**
      * Проверяет, что слово начинается с префикса.
+     * Порядок работы: делаем массив char из строки префикса, проходим все элементы массива value, сравнение элементов value и data.
      * @param prefix префикс.
      * @return если слово начинается с префикса.
      */
     public boolean startWith(String prefix) {
         boolean result = true;
-        //делаем массив char из строки префикса.
         char[] value = prefix.toCharArray();
-        //проходим все элементы массива value.
         for (int i = 0; i != value.length; i++) {
-            //сравнение элементов value и data.
             if (value[i] != data[i]) {
                 result = false;
                 break;

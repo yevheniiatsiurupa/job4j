@@ -9,11 +9,11 @@ import java.util.Arrays;
 public class ArrayDuplicate {
     /**
      * Метод удаляет дубликаты в массиве.
+     * Count счетчик дублированных значений.
      * @param array исходный массив.
      * @return возвращает массив после сортировки.
      */
     public String[] remove(String[] array) {
-        //счетчик дублированных значений
         int count = 0;
         for (int i = 0; i <= array.length - 2 - count; i++) {
             for (int j = i + 1; j <= array.length - 1 - count; j++) {
