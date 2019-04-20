@@ -8,8 +8,8 @@ import static org.junit.Assert.assertThat;
  * Test.
  *
  * @author Evgeniya Tsiurupa
- * @version 1.0
- * @since 08/04/2019
+ * @version 2.0
+ * @since 20/04/2019
  */
 
 public class PointTest {
@@ -19,8 +19,20 @@ public class PointTest {
       */
             @Test
         public void whenZeroAndTenThenTen() {
-            Point point = new Point();
-            double result = point.distance(0, 0, 0, 10);
+            Point first = new Point(0, 0);
+            Point second = new Point (0, 10);
+            double result = first.distance(second);
             assertThat(result, is(10D));
         }
+
+    /**
+     * Test info.
+     */
+    @Test
+    public void whenShowInfo() {
+        Point first = new Point(1, 1);
+        first.info();
+        Point second = new Point(2, 2);
+        second.info();
+    }
 }

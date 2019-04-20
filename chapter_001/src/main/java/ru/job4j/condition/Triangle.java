@@ -3,11 +3,30 @@ package ru.job4j.condition;
 /**
  * Программа для вычисления площади треугольника.
  * @author Evgeniya Tsiurupa
- * @version 1.0
- * @since 10/04/2019
+ * @version 2.0
+ * @since 20/04/2019
  */
 
 public class Triangle {
+    /**
+     * Поля класса.
+     */
+    private Point first;
+    private Point second;
+    private Point third;
+
+    /**
+     * Конструктор класса Triangle.
+     * @param ap точка 1;
+     * @param bp точка 2;
+     * @param cp точка 3;
+     */
+    public Triangle(Point ap, Point bp, Point cp) {
+        this.first = ap;
+        this.second = bp;
+        this.third = cp;
+    }
+
     /**
      * Метод вычисления полупериметра по длинам сторон.
      *
@@ -36,11 +55,11 @@ public class Triangle {
      * @return Вернуть прощадь, если треугольник существует или -1.
      */
 
-    public double area(int x1, int y1, int x2, int y2, int x3, int y3) {
+    public double area() {
         double rs1 = -1;
-        double a = new Point().distance(x1, y1, x2, y2);
-        double b = new Point().distance(x2, y2, x3, y3);
-        double c = new Point().distance(x1, y1, x3, y3);
+        double a = this.first.distance(this.second);
+        double b = this.first.distance(this.third);
+        double c = this.second.distance(this.third);
         double p = period(a, b, c);
         if (this.exist(a, b, c)) {
             rs1 = Math.sqrt(p * (p - a) * (p - b) * (p - c));

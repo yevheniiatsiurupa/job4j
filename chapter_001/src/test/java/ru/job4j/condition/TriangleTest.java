@@ -11,8 +11,8 @@ import static org.junit.Assert.*;
  * Test.
  *
  * @author Evgeniya Tsiurupa
- * @version 1.0
- * @since 10/04/2019
+ * @version 2.0
+ * @since 20/04/2019
  */
 public class TriangleTest {
     /**
@@ -20,8 +20,11 @@ public class TriangleTest {
      */
     @Test
     public void whenSetThreePointsThenTriangleArea() {
-        Triangle triangle = new Triangle();
-        double result = triangle.area(0, 0, 0, 2, 2, 0);
+        Point x = new Point(0, 0);
+        Point y = new Point (0, 2);
+        Point z = new Point (2, 0);
+        Triangle triangle = new Triangle(x, y, z);
+        double result = triangle.area();
         double expected = 2D;
         assertThat(result, closeTo(expected, 0.1));
     }
