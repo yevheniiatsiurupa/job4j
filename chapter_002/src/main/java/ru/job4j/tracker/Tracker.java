@@ -49,8 +49,8 @@ public class Tracker {
      */
     public boolean replace(String id, Item item) {
         boolean result = false;
-        for (int i = 0; i != this.items.length; i++) {
-            if (this.items[i].equals(this.findById(id))) {
+        for (int i = 0; i != this.position; i++) {
+            if (this.items[i].getId().equals(id)) {
                 this.items[i] = item;
                 result = true;
                 break;
@@ -66,9 +66,9 @@ public class Tracker {
      */
     public Item findById(String id) {
         Item result = null;
-        for (Item item : this.items) {
-            if (item != null && item.getId().equals(id)) {
-                result = item;
+        for (int i = 0; i < this.position; i++) {
+            if (this.items[i] != null && this.items[i].getId().equals(id)) {
+                result = this.items[i];
                 break;
             }
         }
@@ -100,13 +100,7 @@ public class Tracker {
      * @return возвращает массив со всеми заявками (все ненулевые элементы хранилища).
      */
     public Item[] findAll() {
-        int count = 0;
-        for (int i = 0; i != this.items.length; i++) {
-            if (this.items[i] != (null)) {
-                count++;
-            }
-        }
-        return Arrays.copyOf(this.items, count);
+        return Arrays.copyOf(this.items, this.position);
     }
 
     /**
