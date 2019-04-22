@@ -21,8 +21,8 @@ public class TriangleTest {
     @Test
     public void whenSetThreePointsThenTriangleArea() {
         Point x = new Point(0, 0);
-        Point y = new Point (0, 2);
-        Point z = new Point (2, 0);
+        Point y = new Point(0, 2);
+        Point z = new Point(2, 0);
         Triangle triangle = new Triangle(x, y, z);
         double result = triangle.area();
         double expected = 2D;

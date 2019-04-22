@@ -20,7 +20,7 @@ public class PointTest {
             @Test
         public void whenZeroAndTenThenTen() {
             Point first = new Point(0, 0);
-            Point second = new Point (0, 10);
+            Point second = new Point(0, 10);
             double result = first.distance(second);
             assertThat(result, is(10D));
         }
