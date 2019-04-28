@@ -18,7 +18,7 @@ public class SquareTest {
     public void whenDrawSquare() {
         Square square = new Square();
         String ln = System.lineSeparator();
-        assertThat(square.draw(),is(new StringBuilder()
+        assertThat(square.draw(), is(new StringBuilder()
                 .append("++++")
                 .append(ln)
                 .append("+  +")

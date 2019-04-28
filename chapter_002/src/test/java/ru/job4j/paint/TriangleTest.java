@@ -18,7 +18,7 @@ public class TriangleTest {
     public void whenDrawTriangle() {
         Triangle triangle = new Triangle();
         String ln = System.lineSeparator();
-        assertThat(triangle.draw(),is(new StringBuilder()
+        assertThat(triangle.draw(), is(new StringBuilder()
                 .append("   +   ")
                 .append(ln)
                 .append("  +++  ")
