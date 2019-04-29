@@ -96,7 +96,7 @@ public class StartUI {
     /**
      * Метод реализует показ всех заявок.
      */
-    public void showAllItems() {
+    private void showAllItems() {
         System.out.println("------------ Показ существующих заявок --------------");
         Item[] show = this.tracker.findAll();
         for (int i = 0; i < show.length; i++) {
@@ -107,7 +107,7 @@ public class StartUI {
     /**
      * Метод реализует редактирование заявки.
      */
-    public void editItem() {
+    private void editItem() {
         System.out.println("------------ Редактирование заявок --------------");
         String id = this.input.ask("Введите id заявки, которую необходимо отредактировать: ");
         String name = this.input.ask("Введите имя заявки: ");
@@ -125,7 +125,7 @@ public class StartUI {
     /**
      * Метод реализует удаление заявки.
      */
-    public void deleteItem() {
+    private void deleteItem() {
         System.out.println("------------ Удаление заявок --------------");
         String id = this.input.ask("Введите id заявки, которую необходимо удалить: ");
         boolean result = this.tracker.delete(id);
@@ -139,7 +139,7 @@ public class StartUI {
     /**
      * Метод реализует поиск заявки по id.
      */
-    public void findItemById() {
+    private void findItemById() {
         System.out.println("------------ Поиск заявок по id --------------");
         String id = this.input.ask("Введите id заявки, которую необходимо найти: ");
         Item result = this.tracker.findById(id);
@@ -152,7 +152,7 @@ public class StartUI {
     /**
      * Метод реализует поиск заявок по имени.
      */
-    public void findItemByName() {
+    private void findItemByName() {
         System.out.println("------------ Поиск заявок по имени --------------");
         String id = this.input.ask("Введите имя заявки, которую необходимо найти: ");
         Item[] result = this.tracker.findByName(id);

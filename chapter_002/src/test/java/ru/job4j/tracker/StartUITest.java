@@ -25,6 +25,35 @@ public class StartUITest {
      */
     private final String ln = System.lineSeparator();
 
+    /**
+     * Поле содержит строки меню.
+     */
+    private final String menu = this.showMenu();
+
+    private String showMenu() {
+        StringBuilder menu = new StringBuilder();
+        menu.append(ln);
+        menu.append("Menu.");
+        menu.append(ln);
+        menu.append("0. Add new Item");
+        menu.append(ln);
+        menu.append("1. Show all Items");
+        menu.append(ln);
+        menu.append("2. Edit Item");
+        menu.append(ln);
+        menu.append("3. Delete Item");
+        menu.append(ln);
+        menu.append("4. Find Item by Id");
+        menu.append(ln);
+        menu.append("5. Find Items by name");
+        menu.append(ln);
+        menu.append("6. Exit Program");
+        menu.append(ln);
+        return menu.toString();
+    }
+
+
+
 
     @Before
     public void loadOutput() {
@@ -45,11 +74,12 @@ public class StartUITest {
     public void whenUserFindByIDThenOutputNameAndDesc() {
         Tracker tracker = new Tracker();
         Item first = tracker.add(new Item("test name1", "test desc1", 123L));
-        Input input = new StubInput(new String[]{first.getId()});
-        StartUI start = new StartUI(input, tracker);
-        start.findItemById();
+        Input input = new StubInput(new String[]{"4", first.getId(), "6"});
+        new StartUI(input, tracker).init();
         String firstLine = "------------ Поиск заявок по id --------------";
-        assertThat(new String(this.out.toByteArray()), is(String.format("%s%sИмя заявки - test name1%sОписание заявки - test desc1%s", firstLine, ln, ln, ln)));
+        assertThat(new String(this.out.toByteArray()), is(String.format(
+                "%s%s%sИмя заявки - test name1%sОписание заявки - test desc1%s%s",
+                menu, firstLine, ln, ln, ln, menu)));
     }
 
     /**
@@ -59,11 +89,13 @@ public class StartUITest {
     public void whenUserFindByNameThenOutputItem() {
         Tracker tracker = new Tracker();
         Item first = tracker.add(new Item("test name1", "test desc1", 123L));
-        Input input = new StubInput(new String[]{first.getName()});
+        Input input = new StubInput(new String[]{"5", first.getName(), "6"});
         StartUI start = new StartUI(input, tracker);
-        start.findItemByName();
+        new StartUI(input, tracker).init();
         String firstLine = "------------ Поиск заявок по имени --------------";
-        assertThat(new String(this.out.toByteArray()), is(String.format("%s%sЗаявка с номером id - %s%s", firstLine, ln, first.getId(), ln)));
+        assertThat(new String(this.out.toByteArray()), is(String.format(
+                "%s%s%sЗаявка с номером id - %s%s%s",
+                menu, firstLine, ln, first.getId(), ln, menu)));
     }
 
     /**
@@ -73,10 +105,12 @@ public class StartUITest {
     public void whenUserFindAllThenShowAllItemsNames() {
         Tracker tracker = new Tracker();
         Item first = tracker.add(new Item("test name1", "test desc1", 123L));
-        Input input = new StubInput(new String[0]);
+        Input input = new StubInput(new String[] {"1", "6"});
         StartUI start = new StartUI(input, tracker);
-        start.showAllItems();
+        new StartUI(input, tracker).init();
         String firstLine = "------------ Показ существующих заявок --------------";
-        assertThat(new String(this.out.toByteArray()), is(String.format("%s%sЗаявка 1 - %s%s", firstLine, ln, first.getName(), ln)));
+        assertThat(new String(this.out.toByteArray()), is(String.format(
+                "%s%s%sЗаявка 1 - %s%s%s",
+                menu, firstLine, ln, first.getName(), ln, menu)));
     }
 }
