@@ -1,5 +1,8 @@
 package ru.job4j.tracker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @version 1.0.
  * @since 22/04/2019.
@@ -28,14 +31,18 @@ public class StartUI {
 
     /**
      * Основной цикл программы.
+     * Добавляем массив с допустимыми значениями ввода.
      */
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
+        List<Integer> range = new ArrayList<>();
         menu.fillActions();
         menu.show();
+        for (int i = 0; i < menu.getActionsLength(); i++) {
+            range.add(i);
+        }
         do {
-            int key = Integer.valueOf(input.ask("Введите пункт меню:"));
-            menu.select(key);
+            menu.select(input.ask("Введите пункт меню:", range));
             menu.show();
         } while (Integer.parseInt(input.ask("Введите пункт меню:")) != 6);
     }
@@ -46,6 +53,6 @@ public class StartUI {
      * @param args
      */
     public static void main(String[] args) {
-        new StartUI(new ConsoleInput(), new Tracker()).init();
+        new StartUI(new ValidateInput(), new Tracker()).init();
     }
 }

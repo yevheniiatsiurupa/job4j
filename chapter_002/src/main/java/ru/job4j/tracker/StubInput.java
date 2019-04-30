@@ -1,5 +1,7 @@
 package ru.job4j.tracker;
 
+import java.util.List;
+
 public class StubInput implements Input {
     /**
      * Поле содержит последовательность ответов пользователя.
@@ -27,5 +29,10 @@ public class StubInput implements Input {
     @Override
     public String ask(String question) {
         return this.value[this.position++];
+    }
+
+    @Override
+    public int ask(String question, List<Integer> range) {
+        throw new MenuOutException("Out of Menu range");
     }
 }
