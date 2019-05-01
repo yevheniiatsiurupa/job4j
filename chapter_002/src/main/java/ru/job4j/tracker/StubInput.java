@@ -31,8 +31,28 @@ public class StubInput implements Input {
         return this.value[this.position++];
     }
 
+    /**
+     * Метод реализует аналогичный метод из интерфейса Input.
+     * @param question вопрос при вызове метода ask (с проверкой ввода чисел).
+     * @param range массив допустимых значений для ввода.
+     * @return возвращает по порядку элементы массива value с заранее определенными ответами.
+     * Счетчик позиции увеличивается на 1.
+     */
     @Override
     public int ask(String question, List<Integer> range) {
-        return Integer.valueOf(this.value[this.position++]);
+        position++;
+        int key = Integer.valueOf(this.value[this.position - 1]);
+        boolean exist = false;
+        for (int value : range) {
+            if (value == key) {
+                exist = true;
+                break;
+            }
+        }
+        if (!exist) {
+            throw new MenuOutException("Out of Menu range");
+        }
+        return key;
+
     }
 }
