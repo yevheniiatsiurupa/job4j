@@ -11,7 +11,16 @@ public class ValidateInput implements Input {
     public String ask(String question) {
         return this.input.ask(question);
     }
-    public int ask(String question, List range){
+
+    /**
+     * Метод реализует аналогичный метод из интерфейса Input.
+     * @param question вопрос при вызове метода ask (с проверкой ввода чисел).
+     * @param range массив допустимых значений для ввода.
+     * @return возвращает введенное значение, если оно является целым числом и находится в пределах массива допустимых
+     * значений (не выбрасывает исключений).
+     */
+    @Override
+    public int ask(String question, List<Integer> range){
         boolean invalid = true;
         int value = -1;
         do {
