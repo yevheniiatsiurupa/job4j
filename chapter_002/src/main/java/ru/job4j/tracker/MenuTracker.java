@@ -66,7 +66,7 @@ public class MenuTracker {
     }
 
     /**
-     * Метод заполняет массив.
+     * Метод заполняет массив actions вариантами возможных действий.
      */
     public void fillActions() {
         this.actions.add(new AddItem());

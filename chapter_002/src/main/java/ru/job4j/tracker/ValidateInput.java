@@ -20,7 +20,7 @@ public class ValidateInput implements Input {
      * значений (не выбрасывает исключений).
      */
     @Override
-    public int ask(String question, List<Integer> range){
+    public int ask(String question, List<Integer> range) {
         boolean invalid = true;
         int value = -1;
         do {

@@ -53,7 +53,9 @@ public class StartUITest {
     }
 
 
-
+    /**
+     * Метод заменяет стандартный вывод System.out на вывод в созданный массив байтов out.
+     */
 
     @Before
     public void loadOutput() {
@@ -61,6 +63,9 @@ public class StartUITest {
         System.setOut(new PrintStream(this.out));
     }
 
+    /**
+     * Метод возвращает стандартный вывод System.out.
+     */
     @After
     public void backOutput() {
         System.setOut(this.stdout);
@@ -69,6 +74,10 @@ public class StartUITest {
 
     /**
      * Test find by ID.
+     * Порядок действий: создание объекта типа Item, создание объекта с последовательностью
+     * ответов пользователя, создание объекта StartUI и применение основного метода init().
+     * Тест проверяет, что на консоль (в массив байтов) будет выведено меню, строка first line, Имя заявки, Описание заявки,
+     * снова меню.
      */
     @Test
     public void whenUserFindByIDThenOutputNameAndDesc() {

@@ -7,6 +7,7 @@ import java.util.List;
  * @version 1.0.
  * @since 22/04/2019.
  * @author Evgeniya Tsiurupa
+ * Класс для запуска программы.
  */
 public class StartUI {
 
@@ -31,7 +32,12 @@ public class StartUI {
 
     /**
      * Основной цикл программы.
-     * Добавляем массив с допустимыми значениями ввода.
+     * Создаем объект MenuTracker.
+     * Заполняем массив меню.
+     * Вывод меню на экран.
+     * Заполняем массив range с допустимыми значениями ввода.
+     * Вызов метода select для объекта menu (для выполнения пунтка меню) и
+     * последующий показ меню, пока пользователь не введет пункт меню 6 - выход.
      */
     public void init() {
         MenuTracker menu = new MenuTracker(this.input, this.tracker);
