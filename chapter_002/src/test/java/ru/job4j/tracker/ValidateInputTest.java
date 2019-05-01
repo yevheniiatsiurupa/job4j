@@ -33,13 +33,30 @@ public class ValidateInputTest {
 
     /**
      * Test ask (validate input).
+     * Создаем объект ввода данных input.
+     * В конструктор ValidateInput передаем объект StubInput.
+     * В конструктор StubInput передаем последовательность ответов пользователя.
+     * Пользователь должен ввести неверное значение invalid, программа выбрасывает исключение, пользователь
+     * вводит новое значение, которое находится в массиве допустимых значений range.
      */
     @Test
     public void whenInvalidInput() {
         ValidateInput input = new ValidateInput(new StubInput(new String[] {"invalid", "1"}));
         List<Integer> range = new ArrayList<>();
         range.add(1);
-        input.ask("Enter",range);
+        input.ask("Enter", range);
         assertThat(new String(this.out.toByteArray()), is(String.format("Please enter valid data again.%n")));
+    }
+
+    /**
+     * Test ask (validate input).
+     */
+    @Test
+    public void whenOutOfMenuInput() {
+        ValidateInput input = new ValidateInput(new StubInput(new String[] {"-1", "1"}));
+        List<Integer> range = new ArrayList<>();
+        range.add(1);
+        input.ask("Enter", range);
+        assertThat(new String(this.out.toByteArray()), is(String.format("Please select key from menu.%n")));
     }
 }
