@@ -1,5 +1,6 @@
 package ru.job4j.tracker;
 
+import javax.swing.tree.DefaultTreeCellEditor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,13 +70,13 @@ public class MenuTracker {
      * Метод заполняет массив actions вариантами возможных действий.
      */
     public void fillActions() {
-        this.actions.add(new AddItem());
-        this.actions.add(new ShowAllItems());
-        this.actions.add(new EditItem());
-        this.actions.add(new DeleteItem());
-        this.actions.add(new FindItemByID());
-        this.actions.add(new FindItemByName());
-        this.actions.add(new ExitProgram());
+        this.actions.add(new AddItem(ADD, "Add new Item"));
+        this.actions.add(new ShowAllItems(SHOW_ALL, "Show all Items"));
+        this.actions.add(new EditItem(EDIT, "Edit Item"));
+        this.actions.add(new DeleteItem(DELETE, "Delete Item"));
+        this.actions.add(new FindItemByID(FIND_BY_ID, "Find Item by Id"));
+        this.actions.add(new FindItemByName(FIND_BY_NAME, "Find Items by name"));
+        this.actions.add(new ExitProgram(EXIT, "Exit Program"));
     }
 
     /**
@@ -99,12 +100,23 @@ public class MenuTracker {
         }
     }
 
-    public class AddItem implements UserAction {
-        @Override
-        public int key() {
-            return ADD;
+
+    public class AddItem extends BaseAction {
+        /**
+         * Конструктор.
+         * Ссылается на конструктор родительского класса.
+         * @param key ключ операции.
+         * @param name название операции.
+         */
+        public AddItem(int key, String name) {
+            super(key, name);
         }
 
+        /**
+         * Метод добавляет новую заявку в трекер.
+         * @param input объект типа Input.
+         * @param tracker объект типа Tracker.
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Добавление новой заявки --------------");
@@ -116,19 +128,24 @@ public class MenuTracker {
             System.out.println("------------ Новая заявка с getId : " + item.getId() + "-----------");
 
         }
-
-        @Override
-        public String info() {
-            return String.format("%d. %s", this.key(), "Add new Item");
-        }
     }
 
-    public class ShowAllItems implements UserAction {
-        @Override
-        public int key() {
-            return SHOW_ALL;
+    public class ShowAllItems extends BaseAction {
+        /**
+         * Конструктор.
+         * Ссылается на конструктор родительского класса.
+         * @param key ключ операции.
+         * @param name название операции.
+         */
+        public ShowAllItems(int key, String name) {
+            super(key, name);
         }
 
+        /**
+         * Метод добавляет показывает все заявки, внесенные в трекер.
+         * @param input объект типа Input.
+         * @param tracker объект типа Tracker.
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Показ существующих заявок --------------");
@@ -137,19 +154,24 @@ public class MenuTracker {
                 System.out.println(String.format("Заявка %d - %s", (i + 1), show[i].getName()));
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%d. %s", this.key(), "Show all Items");
-        }
     }
 
-    public class EditItem implements UserAction {
-        @Override
-        public int key() {
-            return EDIT;
+    public class EditItem extends BaseAction {
+        /**
+         * Конструктор.
+         * Ссылается на конструктор родительского класса.
+         * @param key ключ операции.
+         * @param name название операции.
+         */
+        public EditItem(int key, String name) {
+            super(key, name);
         }
 
+        /**
+         * Метод редактирует заявку по номеру ID.
+         * @param input объект типа Input.
+         * @param tracker объект типа Tracker.
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Редактирование заявок --------------");
@@ -165,19 +187,24 @@ public class MenuTracker {
                 System.out.println("Редактирование не выполнено.");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%d. %s", this.key(), "Edit Item");
-        }
     }
 
-    public class DeleteItem implements UserAction {
-        @Override
-        public int key() {
-            return DELETE;
+    public class DeleteItem extends BaseAction {
+        /**
+         * Конструктор.
+         * Ссылается на конструктор родительского класса.
+         * @param key ключ операции.
+         * @param name название операции.
+         */
+        public DeleteItem(int key, String name) {
+            super(key, name);
         }
 
+        /**
+         * Метод удаляет заявку по номеру ID.
+         * @param input объект типа Input.
+         * @param tracker объект типа Tracker.
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Удаление заявок --------------");
@@ -189,19 +216,24 @@ public class MenuTracker {
                 System.out.println("Удаление заявки не выполнено.");
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%d. %s", this.key(), "Delete Item");
-        }
     }
 
-    public class FindItemByID implements UserAction {
-        @Override
-        public int key() {
-            return FIND_BY_ID;
+    public class FindItemByID extends BaseAction {
+        /**
+         * Конструктор.
+         * Ссылается на конструктор родительского класса.
+         * @param key ключ операции.
+         * @param name название операции.
+         */
+        public FindItemByID(int key, String name) {
+            super(key, name);
         }
 
+        /**
+         * Метод находит заявку по номеру ID.
+         * @param input объект типа Input.
+         * @param tracker объект типа Tracker.
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Поиск заявок по id --------------");
@@ -212,19 +244,24 @@ public class MenuTracker {
                 System.out.println("Описание заявки - " + result.getDesc());
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%d. %s", this.key(), "Find Item by Id");
-        }
     }
 
-    public class FindItemByName implements UserAction {
-        @Override
-        public int key() {
-            return FIND_BY_NAME;
+    public class FindItemByName extends BaseAction {
+        /**
+         * Конструктор.
+         * Ссылается на конструктор родительского класса.
+         * @param key ключ операции.
+         * @param name название операции.
+         */
+        public FindItemByName(int key, String name) {
+            super(key, name);
         }
 
+        /**
+         * Метод находит заявку по названию.
+         * @param input объект типа Input.
+         * @param tracker объект типа Tracker.
+         */
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Поиск заявок по имени --------------");
@@ -234,26 +271,21 @@ public class MenuTracker {
                 System.out.println("Заявка с номером id - " + result[i].getId());
             }
         }
-
-        @Override
-        public String info() {
-            return String.format("%d. %s", this.key(), "Find Items by name");
-        }
     }
 
-    public class ExitProgram implements UserAction {
-        @Override
-        public int key() {
-            return EXIT;
+    public class ExitProgram extends BaseAction {
+        /**
+         * Конструктор.
+         * Ссылается на конструктор родительского класса.
+         * @param key ключ операции.
+         * @param name название операции.
+         */
+        public ExitProgram(int key, String name) {
+            super(key, name);
         }
 
         @Override
         public void execute(Input input, Tracker tracker) {
-        }
-
-        @Override
-        public String info() {
-            return String.format("%d. %s", this.key(), "Exit Program");
         }
     }
 }
