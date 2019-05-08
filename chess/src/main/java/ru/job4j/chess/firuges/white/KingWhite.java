@@ -10,10 +10,10 @@ import ru.job4j.chess.firuges.Figure;
  * @version $Id$
  * @since 0.1
  */
-public class BishopWhite implements Figure {
+public class KingWhite implements Figure {
     private final Cell position;
 
-    public BishopWhite(final Cell position) {
+    public KingWhite(final Cell position) {
         this.position = position;
     }
 
@@ -24,9 +24,9 @@ public class BishopWhite implements Figure {
 
     /**
      * Метод определяет возможные варианты хода фигуры и возвращает массив ячеек, которые пройдет фигура
-     * от source до desc, если она ходит верно (только по диагоналям).
-     * deltaX, deltaY параметры, которые помогают определить, ходит ли фигура по диагонали.
-     * При делении deltaX / Y на их абсолютные значения можно определить направление движения (по знакам).
+     * от source до desc, если она ходит верно (только на 1 клетку).
+     * deltaX, deltaY параметры, которые помогают определить направление движения фигуры.
+     * right, up, left определяют направления движения.
      * @param source начальная ячейка фигуры.
      * @param dest конечная ячейка, в которую мы собираемся потом скопировать фигуру после допустимого хода.
      * @return возвращает массив ячеек, которые пройдет фигура.
@@ -36,23 +36,37 @@ public class BishopWhite implements Figure {
         Cell[] steps;
         int deltaX = dest.x - source.x;
         int deltaY = dest.y - source.y;
-        if (Math.abs(deltaX) != Math.abs(deltaY)) {
+
+        if (!(Math.abs(deltaX) <= 1 && Math.abs(deltaY) <= 1)) {
             throw new ImpossibleMoveException("Impossible move");
         }
-        int size = Math.abs(deltaX);
 
-        steps = new Cell[size];
-        int signX = deltaX / Math.abs(deltaX);
-        int signY = deltaY / Math.abs(deltaY);
+        boolean diagonal = Math.abs(deltaX) == Math.abs(deltaY);
+        boolean right = deltaX > 0;
+        boolean left = deltaX < 0;
+        boolean up = deltaY > 0;
 
-        for (int i = 0; i < Math.abs(deltaX); i++) {
-            steps[i] = Cell.findByCoord(source.x + signX * (i + 1), source.y + signY * (i + 1));
+        steps = new Cell[1];
+
+        if (diagonal) {
+            int signX = deltaX / Math.abs(deltaX);
+            int signY = deltaY / Math.abs(deltaY);
+            steps[0] = Cell.findByCoord(source.x + signX, source.y + signY);
+        } else if (right) {
+            steps[0] = Cell.findByCoord(source.x + 1, source.y);
+        } else if (left) {
+            steps[0] = Cell.findByCoord(source.x - 1, source.y);
+        } else if (up) {
+            steps[0] = Cell.findByCoord(source.x, source.y + 1);
+        } else {
+            steps[0] = Cell.findByCoord(source.x, source.y - 1);
         }
+
         return steps;
     }
 
     @Override
     public Figure copy(Cell dest) {
-        return new BishopWhite(dest);
+        return new KingWhite(dest);
     }
 }

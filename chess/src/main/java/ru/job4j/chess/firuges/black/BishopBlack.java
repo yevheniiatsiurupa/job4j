@@ -1,4 +1,4 @@
-package ru.job4j.chess.firuges.white;
+package ru.job4j.chess.firuges.black;
 
 import ru.job4j.chess.ImpossibleMoveException;
 import ru.job4j.chess.firuges.Cell;
@@ -10,10 +10,10 @@ import ru.job4j.chess.firuges.Figure;
  * @version $Id$
  * @since 0.1
  */
-public class BishopWhite implements Figure {
+public class BishopBlack implements Figure {
     private final Cell position;
 
-    public BishopWhite(final Cell position) {
+    public BishopBlack(final Cell position) {
         this.position = position;
     }
 
@@ -53,6 +53,6 @@ public class BishopWhite implements Figure {
 
     @Override
     public Figure copy(Cell dest) {
-        return new BishopWhite(dest);
+        return new BishopBlack(dest);
     }
 }
