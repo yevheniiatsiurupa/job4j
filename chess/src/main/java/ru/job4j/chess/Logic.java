@@ -32,31 +32,26 @@ public class Logic {
      */
     public boolean move(Cell source, Cell dest)
             throws ImpossibleMoveException, OccupiedWayException, FigureNotFoundException {
-        boolean rst = false;
         int index = this.findBy(source);
-        if (index != -1) {
-            Cell[] steps = this.figures[index].way(source, dest);
-            if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                boolean occupied = false;
-                for (int pos = 0; pos < steps.length - 1; pos++) {
-                    if (this.findBy(steps[pos]) != -1) {
-                        occupied = true;
-                        break;
-                    }
-                }
-                if (!occupied) {
-                    rst = true;
-                    this.figures[index] = this.figures[index].copy(dest);
-                } else {
-                    throw new OccupiedWayException("Cell is occupied");
-                }
-            } else {
-                throw new ImpossibleMoveException("Impossible move");
-            }
-        } else {
+        if (index == -1) {
             throw new FigureNotFoundException("Figure is not found");
         }
-        return rst;
+        Cell[] steps = this.figures[index].way(source, dest);
+        if (!(steps.length > 0 && steps[steps.length - 1].equals(dest))) {
+            throw new ImpossibleMoveException("Impossible move");
+        }
+        boolean occupied = false;
+        for (int pos = 0; pos < steps.length - 1; pos++) {
+            if (this.findBy(steps[pos]) != -1) {
+                occupied = true;
+                break;
+            }
+        }
+        if (occupied) {
+            throw new OccupiedWayException("Cell is occupied");
+        }
+        this.figures[index] = this.figures[index].copy(dest);
+        return true;
     }
 
     public void clean() {
