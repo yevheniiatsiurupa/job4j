@@ -18,6 +18,10 @@ public class Point {
     private int y;
 
     /**
+     * Поле объекта.
+     */
+    private int z;
+    /**
      * Конструкор, который принимает начальное состояние объекта.
      * @param first координата х.
      * @param second координата у.
@@ -25,6 +29,12 @@ public class Point {
     public Point(int first, int second) {
         this.x = first;
         this.y = second;
+    }
+
+    public Point(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     /**
@@ -36,6 +46,18 @@ public class Point {
        double first = Math.pow(this.x - that.x, 2);
        double second = Math.pow(this.y - that.y, 2);
        return Math.sqrt(first + second);
+    }
+
+    /**
+     * Вычисляем расстояние между точками в пространстве.
+     * @param that объект класса Point с двумя координатами.
+     * @return расстояние между точками 1 и 2.
+     */
+    public double distance3d(Point that) {
+        double first = Math.pow(this.x - that.x, 2);
+        double second = Math.pow(this.y - that.y, 2);
+        double third = Math.pow(this.z - that.z, 2);
+        return Math.sqrt(first + second + third);
     }
 
     /**

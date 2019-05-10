@@ -35,4 +35,15 @@ public class PointTest {
         Point second = new Point(2, 2);
         second.info();
     }
+
+    /**
+     * Test distance3d.
+     */
+    @Test
+    public void whenThreeAndFourThenFive() {
+        Point first = new Point(3, 4, 0);
+        Point second = new Point(0, 0, 0);
+        double result = first.distance3d(second);
+        assertThat(result, is(5D));
+    }
 }
