@@ -17,11 +17,9 @@ public class PriorityOueueTest {
     @Test
     public void whenHigherPriority() {
         PriorityQueue queue = new PriorityQueue();
-        queue.put(new Task("initial_1", 0));
-        queue.put(new Task("initial_2", 1));
-        queue.put(new Task("low", 2));
-        queue.put(new Task("urgent", 0));
-        queue.put(new Task("middle", 1));
+        queue.put(new Task("low", 5));
+        queue.put(new Task("urgent", 1));
+        queue.put(new Task("middle", 3));
         Task result = queue.take();
         assertThat(result.getDesc(), is("urgent"));
     }
