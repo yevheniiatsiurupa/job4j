@@ -33,9 +33,6 @@ public class ConvertList2Array {
                 i++;
             }
         }
-        for (int k = list.size(); k < result.length; k++) {
-            result[rows - 1][result.length - k] = 0;
-        }
         return result;
     }
 }
