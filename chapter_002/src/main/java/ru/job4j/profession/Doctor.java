@@ -4,7 +4,7 @@ public class Doctor extends Profession {
     private String internship;
     private int magicPowersLevel;
 
-    public Doctor (String name, String surname, String education, String birthday, String internship) {
+    public Doctor(String name, String surname, String education, String birthday, String internship) {
         super(name, surname, education, birthday);
         this.internship = internship;
     }
@@ -24,7 +24,7 @@ public class Doctor extends Profession {
     public void getMad(Pacient first) {
     }
 
-    public void setMagicPowersLevel (int level) {
+    public void setMagicPowersLevel(int level) {
         this.magicPowersLevel = level;
     }
 }

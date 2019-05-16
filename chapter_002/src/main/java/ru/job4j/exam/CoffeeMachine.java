@@ -36,7 +36,7 @@ public class CoffeeMachine {
             for (int j = 0; j < coinsNumber.length; j++) {
                 if (coinsNumber[j] > 0) {
                     rst[i] = coins[j];
-                    coinsNumber[j] -=1 ;
+                    coinsNumber[j] -= 1;
                     j--;
                     i++;
                 }
