@@ -1,6 +1,10 @@
 package ru.job4j.tracker;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -18,7 +22,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[] {"0", "test name", "test desc", "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("test name"));
+        assertThat(tracker.findAll().get(0).getName(), is("test name"));
     }
 
     /**
@@ -30,7 +34,7 @@ public class StubInputTest {
         Item item = tracker.add(new Item("test name", "test desc", 123L));
         Input input = new StubInput(new String[] {"2", item.getId(), "test replace", "test desc new", "6"});
         new StartUI(input, tracker).init();
-        assertThat(tracker.findAll()[0].getName(), is("test replace"));
+        assertThat(tracker.findAll().get(0).getName(), is("test replace"));
     }
 
     /**
@@ -43,7 +47,8 @@ public class StubInputTest {
         Item two = tracker.add(new Item("test name2", "test desc2", 1234L));
         Input input = new StubInput(new String[] {"3", two.getId(), "6"});
         new StartUI(input, tracker).init();
-        Item[] result = {one};
+        List<Item> result = new ArrayList<>();
+        result.add(one);
         assertThat(result, is(tracker.findAll()));
     }
 }

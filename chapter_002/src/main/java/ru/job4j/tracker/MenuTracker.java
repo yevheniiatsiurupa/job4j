@@ -6,17 +6,17 @@ import java.util.List;
 
 public class MenuTracker {
     /**
-     * @param input хранит ссылку на объект.
+     *  input хранит ссылку на объект.
      */
     private Input input;
 
     /**
-     * @param tracker хранит ссылку на объект.
+     *  tracker хранит ссылку на объект.
      */
     private Tracker tracker;
 
     /**
-     * @param actions хранит ссылку на массив типа UserAction.
+     *  actions хранит ссылку на массив типа UserAction.
      */
     private List<UserAction> actions = new ArrayList<>();
 
@@ -91,7 +91,7 @@ public class MenuTracker {
      * Метод выводит на экран меню.
      */
     public void show() {
-        System.out.println("");
+        System.out.println();
         System.out.println("Menu.");
         for (UserAction action : this.actions) {
             if (action != null) {
@@ -149,9 +149,9 @@ public class MenuTracker {
         @Override
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Показ существующих заявок --------------");
-            Item[] show = tracker.findAll();
-            for (int i = 0; i < show.length; i++) {
-                System.out.println(String.format("Заявка %d - %s", (i + 1), show[i].getName()));
+            List<Item> show = tracker.findAll();
+            for (Item tmp : show) {
+                System.out.println(String.format("Заявка %d - %s", show.indexOf(tmp) + 1, tmp.getName()));
             }
         }
     }
@@ -266,9 +266,9 @@ public class MenuTracker {
         public void execute(Input input, Tracker tracker) {
             System.out.println("------------ Поиск заявок по имени --------------");
             String id = input.ask("Введите имя заявки, которую необходимо найти: ");
-            Item[] result = tracker.findByName(id);
-            for (int i = 0; i < result.length; i++) {
-                System.out.println("Заявка с номером id - " + result[i].getId());
+            List<Item> result = tracker.findByName(id);
+            for (Item tmp : result) {
+                System.out.println("Заявка с номером id - " + tmp.getId());
             }
         }
     }
