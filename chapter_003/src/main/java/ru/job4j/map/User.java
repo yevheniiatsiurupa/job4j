@@ -47,6 +47,14 @@ public class User implements Comparable<User> {
         this.city = city;
     }
 
+    public Integer getAge() {
+        return age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
     /**
      * Метод реализует аналогичный метод из интерфейса Comparable.
      * Метод реализует сравнение User сначала по возрасту, потом по имени.
