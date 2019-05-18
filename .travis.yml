@@ -19,3 +19,6 @@ notifications:
 env:
   global:
     - CODECOV_TOKEN="c4fba0da-4825-4c74-b8f2-087e4ac60c9d"
+
+jdk:
+  openjdk11
