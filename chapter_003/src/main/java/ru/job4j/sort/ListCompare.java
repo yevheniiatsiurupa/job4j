@@ -21,14 +21,9 @@ public class ListCompare implements Comparator<String> {
         int result = 0;
         int size = left.length() < right.length() ? left.length() : right.length();
         for (int index = 0; index != size; index++) {
-            if (left.charAt(index) > right.charAt(index)) {
-                result = 1;
+            if (left.charAt(index) != right.charAt(index)) {
+                result = Character.compare(left.charAt(index), right.charAt(index));
                 break;
-            } else {
-                if (left.charAt(index) < right.charAt(index)) {
-                    result = -1;
-                    break;
-                }
             }
         }
         if (result == 0 && left.length() != right.length()) {
