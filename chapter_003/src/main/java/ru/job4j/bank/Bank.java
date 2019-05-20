@@ -4,8 +4,8 @@ import java.util.*;
 
 /**
  * @author Evgeniya Tsiurupa
- * @version 1.0
- * @since 19/05/2019
+ * @version 2.0
+ * @since 20/05/2019
  */
 
 public class Bank {
@@ -14,7 +14,11 @@ public class Bank {
      */
     private Map<User, List<Account>> database = new TreeMap<>();
 
-
+    /**
+     * Метод для поиска пользователя по номеру паспорта.
+     * @param passport номер паспорта.
+     * @return возвращает пользователя.
+     */
     public User findUserByPassport(String passport) {
         Set<User> tmp = database.keySet();
         User key = null;
@@ -24,6 +28,25 @@ public class Bank {
             }
         }
         return key;
+    }
+
+    /**
+     * Метод для поиска счета по номеру паспорта пользователя и реквизитам.
+     * @param passport паспорт пользователя.
+     * @param requisite реквизиты.
+     * @return возвращает счет.
+     */
+    public Account findAccount(String passport, String requisite) {
+        User o1 = this.findUserByPassport(passport);
+        List<Account> a1 = database.get(o1);
+        Account actual1 = null;
+        for (Account tmp : a1) {
+            if (tmp.getRequisites().equals(requisite)) {
+                actual1 = tmp;
+                break;
+            }
+        }
+        return actual1;
     }
 
     /**
@@ -48,7 +71,12 @@ public class Bank {
      * @param account счет, который добавляется.
      */
     public void addAccountToUser(String passport, Account account) {
-        database.get(this.findUserByPassport(passport)).add(account);
+        User key = this.findUserByPassport(passport);
+        if (key != null) {
+            database.get(key).add(account);
+        } else {
+            System.out.println("User is not found");
+        }
     }
 
     /**
@@ -57,7 +85,12 @@ public class Bank {
      * @param account счет, который удаляется.
      */
     public void deleteAccountFromUser(String passport, Account account) {
-        database.get(this.findUserByPassport(passport)).remove(account);
+        User key = this.findUserByPassport(passport);
+        if (key != null) {
+            database.get(this.findUserByPassport(passport)).remove(account);
+        } else {
+            System.out.println("User is not found");
+        }
     }
 
     /**
@@ -66,7 +99,12 @@ public class Bank {
      * @return возвращает список счетов.
      */
     public List<Account> getUserAccounts(String passport) {
-        return database.get(this.findUserByPassport(passport));
+        User key = this.findUserByPassport(passport);
+        List<Account> result = new ArrayList<>();
+        if (key != null) {
+            result = database.get(this.findUserByPassport(passport));
+        }
+        return result;
     }
 
     /**
@@ -80,29 +118,9 @@ public class Bank {
      */
     public boolean transferMoney(String srcPassport, String srcRequisite,
                                   String destPassport, String dstRequisite, double amount) {
-        User o1 = this.findUserByPassport(srcPassport);
-        User o2 = this.findUserByPassport(destPassport);
-        List<Account> a1 = database.get(o1);
-        List<Account> a2 = database.get(o2);
-        Account actual1 = null;
-        Account actual2 = null;
-        boolean checkAccount1 = false;
-        boolean checkAccount2 = false;
-        for (Account tmp : a1) {
-            if (tmp.getRequisites().equals(srcRequisite)) {
-                actual1 = tmp;
-                checkAccount1 = true;
-                break;
-            }
-        }
-        for (Account tmp : a2) {
-            if (tmp.getRequisites().equals(dstRequisite)) {
-                actual2 = tmp;
-                checkAccount2 = true;
-                break;
-            }
-        }
-        return checkAccount1 && checkAccount2 && actual1.transfer(actual2, amount);
+        Account srcAccount = this.findAccount(srcPassport, srcRequisite);
+        Account destAccount = this.findAccount(destPassport, dstRequisite);
+        return srcAccount != null && destAccount != null && srcAccount.transfer(destAccount, amount);
 
     }
 }
