@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.function.Consumer;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -19,6 +20,18 @@ public class StartUITest {
      * Поле создает буфер для хранения вывода.
      */
     private final ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+    /**
+     * Поле для организации вывода.
+     */
+    private final Consumer<String> output = new Consumer<>() {
+        private final PrintStream stdout = new PrintStream(out);
+
+        @Override
+        public void accept(String s) {
+            stdout.println(s);
+        }
+    };
 
     /**
      * Поле содержит разделитель строк.
@@ -84,9 +97,9 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item first = tracker.add(new Item("test name1", "test desc1", 123L));
         Input input = new StubInput(new String[]{"4", first.getId(), "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, output).init();
         String firstLine = "------------ Поиск заявок по id --------------";
-        assertThat(new String(this.out.toByteArray()), is(String.format(
+        assertThat(this.output.toString(), is(String.format(
                 "%s%s%sИмя заявки - test name1%sОписание заявки - test desc1%s%s",
                 menu, firstLine, ln, ln, ln, menu)));
     }
@@ -99,10 +112,10 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item first = tracker.add(new Item("test name1", "test desc1", 123L));
         Input input = new StubInput(new String[]{"5", first.getName(), "6"});
-        StartUI start = new StartUI(input, tracker);
-        new StartUI(input, tracker).init();
+        StartUI start = new StartUI(input, tracker, output);
+        start.init();
         String firstLine = "------------ Поиск заявок по имени --------------";
-        assertThat(new String(this.out.toByteArray()), is(String.format(
+        assertThat(this.output.toString(), is(String.format(
                 "%s%s%sЗаявка с номером id - %s%s%s",
                 menu, firstLine, ln, first.getId(), ln, menu)));
     }
@@ -115,10 +128,10 @@ public class StartUITest {
         Tracker tracker = new Tracker();
         Item first = tracker.add(new Item("test name1", "test desc1", 123L));
         Input input = new StubInput(new String[] {"1", "6"});
-        StartUI start = new StartUI(input, tracker);
-        new StartUI(input, tracker).init();
+        StartUI start = new StartUI(input, tracker, output);
+        start.init();
         String firstLine = "------------ Показ существующих заявок --------------";
-        assertThat(new String(this.out.toByteArray()), is(String.format(
+        assertThat(this.output.toString(), is(String.format(
                 "%s%s%sЗаявка 1 - %s%s%s",
                 menu, firstLine, ln, first.getName(), ln, menu)));
     }

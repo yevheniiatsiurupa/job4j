@@ -21,7 +21,7 @@ public class StubInputTest {
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
         Tracker tracker = new Tracker();
         Input input = new StubInput(new String[] {"0", "test name", "test desc", "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, System.out::println).init();
         assertThat(tracker.findAll().get(0).getName(), is("test name"));
     }
 
@@ -33,7 +33,7 @@ public class StubInputTest {
         Tracker tracker = new Tracker();
         Item item = tracker.add(new Item("test name", "test desc", 123L));
         Input input = new StubInput(new String[] {"2", item.getId(), "test replace", "test desc new", "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, System.out::println).init();
         assertThat(tracker.findAll().get(0).getName(), is("test replace"));
     }
 
@@ -46,7 +46,7 @@ public class StubInputTest {
         Item one = tracker.add(new Item("test name", "test desc", 123L));
         Item two = tracker.add(new Item("test name2", "test desc2", 1234L));
         Input input = new StubInput(new String[] {"3", two.getId(), "6"});
-        new StartUI(input, tracker).init();
+        new StartUI(input, tracker, System.out::println).init();
         List<Item> result = new ArrayList<>();
         result.add(one);
         assertThat(result, is(tracker.findAll()));
