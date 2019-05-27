@@ -31,6 +31,11 @@ public class StartUITest {
         public void accept(String s) {
             stdout.println(s);
         }
+
+        @Override
+        public String toString() {
+            return out.toString();
+        }
     };
 
     /**
