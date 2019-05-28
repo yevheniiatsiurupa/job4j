@@ -4,6 +4,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Evgeniya Tsiurupa
@@ -17,12 +18,12 @@ public class SchoolTest {
      */
     @Test
     public void whenRangeAThenClassA() {
-        Student first = new Student(90);
-        Student second = new Student(65);
-        Student third = new Student(100);
-        Student fourth = new Student(50);
-        Student fifth = new Student(10);
-        Student sixth = new Student(30);
+        Student first = new Student(90, "Petrov");
+        Student second = new Student(65, "Petrov");
+        Student third = new Student(100, "Petrov");
+        Student fourth = new Student(50, "Petrov");
+        Student fifth = new Student(10, "Petrov");
+        Student sixth = new Student(30, "Petrov");
         List<Student> students = List.of(
                 first, second, third,
                 fourth, fifth, sixth
@@ -39,12 +40,12 @@ public class SchoolTest {
      */
     @Test
     public void whenRangeBThenClassB() {
-        Student first = new Student(90);
-        Student second = new Student(65);
-        Student third = new Student(100);
-        Student fourth = new Student(50);
-        Student fifth = new Student(10);
-        Student sixth = new Student(30);
+        Student first = new Student(90, "Petrov");
+        Student second = new Student(65, "Petrov");
+        Student third = new Student(100, "Petrov");
+        Student fourth = new Student(50, "Petrov");
+        Student fifth = new Student(10, "Petrov");
+        Student sixth = new Student(30, "Petrov");
         List<Student> students = List.of(
                 first, second, third,
                 fourth, fifth, sixth
@@ -61,12 +62,12 @@ public class SchoolTest {
      */
     @Test
     public void whenRangeCThenClassC() {
-        Student first = new Student(90);
-        Student second = new Student(65);
-        Student third = new Student(100);
-        Student fourth = new Student(50);
-        Student fifth = new Student(10);
-        Student sixth = new Student(30);
+        Student first = new Student(90, "Petrov");
+        Student second = new Student(65, "Petrov");
+        Student third = new Student(100, "Petrov");
+        Student fourth = new Student(50, "Petrov");
+        Student fifth = new Student(10, "Petrov");
+        Student sixth = new Student(30, "Petrov");
         List<Student> students = List.of(
                 first, second, third,
                 fourth, fifth, sixth
@@ -75,6 +76,21 @@ public class SchoolTest {
         School testSchool = new School();
         List<Student> result = testSchool.collect(students,
                 student -> student.getScore() > 0 && student.getScore() < 50);
+        assertThat(result, is(expected));
+    }
+
+    /**
+     * Test convertToMap.
+     */
+    @Test
+    public void whenHaveStudentsThenReturnMap() {
+        Student first = new Student(100, "Ivanov");
+        Student second = new Student(100, "Petrov");
+        Student third = new Student(100, "Smith");
+        List<Student> students = List.of(first, second, third);
+        School testSchool = new School();
+        Map<String, Student> result = testSchool.convertToMap(students);
+        Map<String, Student> expected = Map.of("Ivanov", first, "Petrov", second, "Smith", third);
         assertThat(result, is(expected));
     }
 }
