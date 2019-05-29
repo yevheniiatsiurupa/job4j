@@ -1,6 +1,7 @@
 package ru.job4j.bank;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Evgeniya Tsiurupa
@@ -21,13 +22,7 @@ public class Bank {
      */
     public User findUserByPassport(String passport) {
         Set<User> tmp = database.keySet();
-        User key = null;
-        for (User temp : tmp) {
-            if (temp.getPassport().equals(passport)) {
-                key = temp;
-            }
-        }
-        return key;
+        return tmp.stream().filter(user -> user.getPassport().equals(passport)).findFirst().orElse(null);
     }
 
     /**
@@ -39,14 +34,7 @@ public class Bank {
     public Account findAccount(String passport, String requisite) {
         User o1 = this.findUserByPassport(passport);
         List<Account> a1 = database.get(o1);
-        Account actual1 = null;
-        for (Account tmp : a1) {
-            if (tmp.getRequisites().equals(requisite)) {
-                actual1 = tmp;
-                break;
-            }
-        }
-        return actual1;
+        return a1.stream().filter(tmp -> tmp.getRequisites().equals(requisite)).findFirst().orElse(null);
     }
 
     /**
