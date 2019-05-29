@@ -93,4 +93,25 @@ public class SchoolTest {
         Map<String, Student> expected = Map.of("Ivanov", first, "Petrov", second, "Smith", third);
         assertThat(result, is(expected));
     }
+
+    /**
+     * Test levelOf.
+     */
+    @Test
+    public void whenHaveStudentsThenReturnHigherThanBound() {
+        Student first = new Student(90, "Petrov");
+        Student second = new Student(65, "Petrov");
+        Student third = new Student(100, "Petrov");
+        Student fourth = new Student(50, "Petrov");
+        Student fifth = new Student(10, "Petrov");
+        Student sixth = new Student(30, "Petrov");
+        List<Student> students = List.of(
+                first, second, third,
+                fourth, fifth, sixth
+        );
+        School testSchool = new School();
+        List<Student> result = testSchool.levelOf(students, 80);
+        List<Student> expected = List.of(third, first);
+        assertThat(result, is(expected));
+    }
 }
