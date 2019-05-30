@@ -13,7 +13,7 @@ public class PhoneDictionary {
     /**
      * Поле хранит список номеров в телефонном справочнике.
      */
-    private List<Person> persons = new ArrayList<Person>();
+    private List<Person> persons = new ArrayList<>();
 
     /**
      * Метод добавляет объект типа Person в список справочника.
@@ -29,8 +29,8 @@ public class PhoneDictionary {
      * @return возвращает список объектов типа Person, которые удовлетворяют поиску по ключу.
      */
     public List<Person> find(String key) {
-        List<Person> result = new ArrayList<Person>();
-        for (Person person : persons) {
+        var result = new ArrayList<Person>();
+        for (var person : persons) {
             if (person.getName().contains(key)
                 || person.getSurname().contains(key)
                 || person.getAddress().contains(key)
