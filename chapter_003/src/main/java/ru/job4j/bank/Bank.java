@@ -75,7 +75,7 @@ public class Bank {
     public void deleteAccountFromUser(String passport, Account account) {
         User key = this.findUserByPassport(passport);
         if (key != null) {
-            database.get(this.findUserByPassport(passport)).remove(account);
+            database.get(key).remove(account);
         } else {
             System.out.println("User is not found");
         }
