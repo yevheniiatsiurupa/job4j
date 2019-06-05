@@ -16,34 +16,17 @@ public class EvenNumbersIterator implements Iterator {
     private final int[] numbers;
 
     /**
-     * Поле хранит указатель на текущую позицию итератора.
+     * Поле хранит указатель на текущую позицию итератора (четное число).
      */
     private int position = -1;
 
+    /**
+     * Поле хранит указатель на следующую позицию итератора (четное число).
+     */
+    private int nextEven = -1;
+
     public EvenNumbersIterator(int[] numbers) {
         this.numbers = numbers;
-        for (int i = 0; i < numbers.length; i++) {
-            if (numbers[i] % 2 == 0) {
-                position = i;
-                break;
-            }
-        }
-    }
-
-    /**
-     * Метод для поиска позиции следующего четного числа в списке.
-     * @param position исходная позиция в массиве.
-     * @return возращает позицию следующего четного числа или исходную позицию.
-     */
-    public int findNextPosition(int position) {
-        int nextPos = numbers.length;
-        for (int i = position + 1; i < numbers.length; i++) {
-            if (numbers[i] % 2 == 0) {
-                nextPos = i;
-                break;
-            }
-        }
-        return nextPos;
     }
 
     /**
@@ -53,7 +36,13 @@ public class EvenNumbersIterator implements Iterator {
     @Override
     public boolean hasNext() {
         boolean result = true;
-        if (position == -1 || position > numbers.length - 1) {
+        for (int i = position + 1; i < numbers.length; i++) {
+            if (numbers[i] % 2 == 0) {
+                nextEven = i;
+                break;
+            }
+        }
+        if (nextEven == -1 || nextEven == position) {
             result = false;
         }
         return result;
@@ -61,16 +50,16 @@ public class EvenNumbersIterator implements Iterator {
 
     /**
      * Метод переопределяет аналогичный метод интерфейса Iterator.
-     * @return возвращает текущее четное число и переводит указатель на следующее четное число.
+     * @return возвращает четное число.
      * @throws NoSuchElementException если не найдено четных чисел в массиве или счетчик выходит за пределы массива.
      */
     @Override
     public Object next() throws NoSuchElementException {
-        if (position == -1 || position > numbers.length - 1) {
+        this.hasNext();
+        if (nextEven == -1 || nextEven == position) {
             throw new NoSuchElementException();
         }
-        Integer result = numbers[position];
-        position = this.findNextPosition(position);
-        return result;
+        position = nextEven;
+        return numbers[position];
     }
 }
