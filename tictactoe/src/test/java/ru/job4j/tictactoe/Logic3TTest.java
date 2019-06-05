@@ -1,4 +1,4 @@
-package job4j.tictactoe;
+package ru.job4j.tictactoe;
 
 import org.junit.Test;
 import static org.hamcrest.core.Is.is;
