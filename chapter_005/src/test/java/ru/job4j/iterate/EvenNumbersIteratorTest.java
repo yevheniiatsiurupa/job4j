@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.junit.Before;
 import org.junit.Test;
 
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
@@ -62,5 +63,13 @@ public class EvenNumbersIteratorTest {
         assertThat(it.next(), is(6));
         assertThat(it.hasNext(), is(true));
         assertThat(it.next(), is(8));
+    }
+
+    @Test
+    public void name() {
+        it = new EvenNumbersIterator(new int[]{2, 1, 3});
+        assertTrue(it.hasNext());
+        assertTrue(it.hasNext());
+        assertTrue(it.hasNext());
     }
 }
