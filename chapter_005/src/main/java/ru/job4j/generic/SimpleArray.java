@@ -42,7 +42,7 @@ public class SimpleArray<T> implements Iterable<T> {
      */
     public boolean set(int index, T model) {
         boolean result = false;
-        if (index >= 0 && index < array.length) {
+        if (index >= 0 && index < position) {
             array[index] = model;
             result = true;
         }
@@ -80,12 +80,12 @@ public class SimpleArray<T> implements Iterable<T> {
             private int currentPos = 0;
             @Override
             public boolean hasNext() {
-                return currentPos < array.length - 1;
+                return currentPos < position;
             }
 
             @Override
             public T next() {
-                return (T) array[currentPos];
+                return (T) array[currentPos++];
             }
         };
     }
