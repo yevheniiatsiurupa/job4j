@@ -1,11 +1,12 @@
 package ru.job4j.generic;
 
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
  * @author Evgeniya Tsiurupa
  * @version 1.0
- * @since 05/06/2019
+ * @since 08/06/2019
  */
 
 public class SimpleArray<T> implements Iterable<T> {
@@ -31,7 +32,10 @@ public class SimpleArray<T> implements Iterable<T> {
         if (position >= array.length) {
             throw new RuntimeException("Array is full");
         }
-        array[position++] = model;
+        if (model != null) {
+            array[position++] = model;
+        }
+
     }
 
     /**
@@ -88,5 +92,22 @@ public class SimpleArray<T> implements Iterable<T> {
                 return (T) array[currentPos++];
             }
         };
+    }
+
+    public <T extends Base> T findById(String id) {
+        T result = null;
+        for (Object tmp : array) {
+            T temp = (T) tmp;
+            if (temp != null && temp.getId().equals(id)) {
+                result = temp;
+                break;
+            }
+        }
+        return result;
+    }
+
+    public <T extends Base> T[] findAll() {
+        T[] result = (T[]) array;
+        return Arrays.copyOf(result, position);
     }
 }
