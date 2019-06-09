@@ -28,4 +28,11 @@ public class SimpleStack<E> {
     public void push(E value) {
         stack.add(value);
     }
+
+    /**
+     * Метод определяет размер стека.
+     */
+    public int size() {
+        return stack.getSize();
+    }
 }
