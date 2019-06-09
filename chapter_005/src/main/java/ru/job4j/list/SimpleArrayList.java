@@ -30,23 +30,6 @@ public class SimpleArrayList<E> {
         this.size++;
     }
 
-
-
-
-
-
-//    Node temp = this.first;
-//        this.first = this.first.next;
-//    temp.next = null;
-//        this.size--;
-
-//    public E removeFirst() {
-//        final Node<E> f = first;
-//        if (f == null)
-//            throw new NoSuchElementException();
-//        return unlinkFirst(f);
-//    }
-
     /**
      * Реализовать метод удаления первого элемент в списке.
      * Порядок действий: создаем ссылку temp на первый элемент,
