@@ -3,9 +3,6 @@ package ru.job4j.list;
 import org.junit.Test;
 import org.junit.Before;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
