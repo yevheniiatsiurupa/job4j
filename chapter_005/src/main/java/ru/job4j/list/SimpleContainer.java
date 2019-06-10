@@ -68,6 +68,13 @@ public class SimpleContainer<E> implements Iterable<E> {
         return (E) container[index];
     }
 
+    /**
+     * Метод для получения длины списка
+     */
+    public int size() {
+        return this.size;
+    }
+
     @Override
     public Iterator<E> iterator() {
         return new Iterator<E>() {
