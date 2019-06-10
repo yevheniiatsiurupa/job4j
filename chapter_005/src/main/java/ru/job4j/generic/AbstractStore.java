@@ -26,13 +26,9 @@ public abstract class AbstractStore<T extends Base> implements Store<T> {
      */
     public boolean replace(String id, T userNew) {
         boolean result = false;
-        T[] allUsers = container.findAll();
-        for (int i = 0; i < allUsers.length; i++) {
-            if (id.equals(allUsers[i].getId())) {
-                container.set(i, userNew);
-                result = true;
-                break;
-            }
+        int index = this.findIndex(id);
+        if (index != -1) {
+            result = this.container.set(index, userNew);
         }
         return result;
     }
@@ -44,13 +40,9 @@ public abstract class AbstractStore<T extends Base> implements Store<T> {
      */
     public boolean delete(String id) {
         boolean result = false;
-        T[] allUsers = container.findAll();
-        for (int i = 0; i < allUsers.length; i++) {
-            if (id.equals(allUsers[i].getId())) {
-                container.remove(i);
-                result = true;
-                break;
-            }
+        int index = this.findIndex(id);
+        if (index != -1) {
+            result = this.container.remove(index);
         }
         return result;
     }
@@ -60,22 +52,20 @@ public abstract class AbstractStore<T extends Base> implements Store<T> {
      * @param id номер элемента, который удаляется.
      * @return возвращает результат выполнения операции.
      */
-    public T findById(String id) {
-        T result = null;
+    public int findIndex(String id) {
+        int index = -1;
+        int count = 0;
         for (T tmp : container) {
             if (id.equals(tmp.getId())) {
-                result = tmp;
+               index = count;
                 break;
             }
+            count++;
         }
-        return result;
+        return index;
     }
 
-    /**
-     * Метод показывает все элементы в контейнере.
-     * @return возвращает массив элементов в контейнере.
-     */
-    public T[] findAll() {
-        return container.findAll();
+    public T findById(String id) {
+        return this.container.get(this.findIndex(id));
     }
 }

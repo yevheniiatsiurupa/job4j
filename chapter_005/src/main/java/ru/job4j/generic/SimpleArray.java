@@ -93,21 +93,4 @@ public class SimpleArray<T> implements Iterable<T> {
             }
         };
     }
-
-    public <T extends Base> T findById(String id) {
-        T result = null;
-        for (Object tmp : array) {
-            T temp = (T) tmp;
-            if (temp != null && temp.getId().equals(id)) {
-                result = temp;
-                break;
-            }
-        }
-        return result;
-    }
-
-    public <T extends Base> T[] findAll() {
-        T[] result = (T[]) array;
-        return Arrays.copyOf(result, position);
-    }
 }
