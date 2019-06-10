@@ -83,6 +83,9 @@ public class SimpleContainer<E> implements Iterable<E> {
                 if (currentModCount != modCount) {
                     throw new ConcurrentModificationException();
                 }
+                if (!this.hasNext()) {
+                    throw new NoSuchElementException();
+                }
                 return (E) container[currentIndex++];
             }
         };
