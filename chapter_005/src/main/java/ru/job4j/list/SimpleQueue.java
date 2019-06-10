@@ -25,6 +25,9 @@ public class SimpleQueue<T> {
                 outStack.push(inStack.poll());
             }
             result = outStack.poll();
+            while (outStack.size() != 0) {
+                inStack.push(outStack.poll());
+            }
         }
         return result;
     }
