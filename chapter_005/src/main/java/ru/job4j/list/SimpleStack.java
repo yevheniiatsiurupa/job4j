@@ -17,9 +17,7 @@ public class SimpleStack<E> {
      * Метод возвращает значение из коллекции и удаляет его.
      */
     public E poll() {
-        E result = stack.get(0);
-        stack.delete();
-        return result;
+        return stack.delete();
     }
 
     /**
