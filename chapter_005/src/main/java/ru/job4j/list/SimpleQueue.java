@@ -19,17 +19,12 @@ public class SimpleQueue<T> {
      * Этот же элемент будет первым в очереди при вызове poll.
      */
     public T poll() {
-        T result = null;
-        if (inStack.size() != 0 || outStack.size() != 0) {
+        if (outStack.size() == 0) {
             while (inStack.size() != 0) {
                 outStack.push(inStack.poll());
             }
-            result = outStack.poll();
-            while (outStack.size() != 0) {
-                inStack.push(outStack.poll());
-            }
         }
-        return result;
+        return outStack.poll();
     }
 
     /**
