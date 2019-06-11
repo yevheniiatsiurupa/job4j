@@ -43,4 +43,20 @@ public class SimpleSetTest {
             System.out.println(it.next());
         }
     }
+
+    /**
+     * Test SimpleSet add / size.
+     */
+    @Test
+    public void whenPutTheSameElementAndNullThenHasOneElement() {
+        SimpleSet<Integer> testSet = new SimpleSet<>();
+        testSet.add(1);
+        testSet.add(null);
+        testSet.add(1);
+        testSet.add(5);
+        Iterator it = testSet.iterator();
+        while (it.hasNext()) {
+            System.out.println(it.next());
+        }
+    }
 }

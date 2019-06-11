@@ -4,6 +4,7 @@ import ru.job4j.list.SimpleContainer;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
+import java.util.TreeSet;
 
 /**
  * @author Evgeniya Tsiurupa
@@ -19,18 +20,34 @@ public class SimpleSet<E> implements Iterable<E> {
     private SimpleContainer<E> container = new SimpleContainer<>();
 
     /**
+     * Метод проверяет наличие элемента в коллекции.
+     * @param e проверяемый элемент.
+     * @return возвращает true, если элемент содержится в коллекции.
+     */
+    public boolean contains(E e) {
+        boolean result = false;
+        for (E tmp : container) {
+            if (e == null) {
+                if (tmp == null) {
+                    result = true;
+                    break;
+                }
+            } else {
+                if (tmp != null && tmp.equals(e)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
      * Метод добавляет элементы в контейнер уникальные элементы.
      * @param e добавляемый элемент.
      */
     public void add(E e) {
-        E result = null;
-        for (E tmp : container) {
-            if (tmp.equals(e)) {
-                result = tmp;
-                break;
-            }
-        }
-        if (result == null) {
+        if (!this.contains(e)) {
             container.add(e);
         }
     }
