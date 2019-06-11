@@ -1,6 +1,6 @@
 package ru.job4j.map;
 
-import java.util.Calendar;
+import java.util.*;
 
 /**
  * @author Evgeniya Tsiurupa
@@ -28,5 +28,31 @@ public class User {
 
     public Calendar getBirthday() {
         return birthday;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return children == user.children &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(birthday, user.birthday);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, children, birthday);
+    }
+
+    public static void main(String[] args) {
+        Map<User, Object> testMap = new HashMap<>();
+        Calendar firstDate = new GregorianCalendar(1990, 2, 10);
+        Calendar secondDate = new GregorianCalendar(1990, 2, 10);
+        User first = new User("John", 2, firstDate);
+        User second = new User("John", 2, secondDate);
+        testMap.put(first, "first");
+        testMap.put(second, "second");
+        System.out.println(testMap);
     }
 }
