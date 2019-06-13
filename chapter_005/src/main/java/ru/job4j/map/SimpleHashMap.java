@@ -84,13 +84,13 @@ public class SimpleHashMap<K, V> {
      * @param hash искомый хешкод.
      * @return возвращает результат (найден ли узел).
      */
-    public boolean containsHash(Node<K, V> first, int hash) {
+    public boolean containsHashAndKey(Node<K, V> first, K key) {
         boolean result = false;
         Node<K, V> temp = first;
         do {
-            if (temp.hash == hash) {
-                result = true;
-                break;
+            if (temp.hash == key.hashCode() && temp.key.equals(key)) {
+                    result = true;
+                    break;
             }
             temp = temp.next;
         }
@@ -111,17 +111,19 @@ public class SimpleHashMap<K, V> {
             newtab = (Node<K, V>[]) new Node[newCapacity];
             int newThreshold = 0;
             for (Node<K, V> tmp : table) {
-                do {
-                    int index = this.indexByKey(tmp.key, newCapacity);
-                    if (newtab[index] == null) {
-                        newtab[index] = new Node<>(tmp.key.hashCode(), tmp.key, tmp.value, null);
-                        newThreshold++;
-                    } else {
-                        Node<K, V> added = new Node<>(tmp.key.hashCode(), tmp.key, tmp.value, newtab[index]);
-                        newtab[index] = added;
+                if (tmp != null) {
+                    do {
+                        int index = this.indexByKey(tmp.key, newCapacity);
+                        if (newtab[index] == null) {
+                            newtab[index] = new Node<>(tmp.key.hashCode(), tmp.key, tmp.value, null);
+                            newThreshold++;
+                        } else {
+                            Node<K, V> added = new Node<>(tmp.key.hashCode(), tmp.key, tmp.value, newtab[index]);
+                            newtab[index] = added;
+                        }
                     }
+                    while (tmp.next != null);
                 }
-                while (tmp.next != null);
             }
             threshold = newThreshold;
         }
@@ -168,7 +170,7 @@ public class SimpleHashMap<K, V> {
             threshold++;
             result = true;
         } else {
-            if (!this.containsHash(table[index], key.hashCode())) {
+            if (!this.containsHashAndKey(table[index], key)) {
                 Node<K, V> added = new Node<>(key.hashCode(), key, value, table[index]);
                 table[index] = added;
                 result = true;
@@ -198,22 +200,14 @@ public class SimpleHashMap<K, V> {
         }
         int index = this.indexByKey(key, table.length);
         Node<K, V> first = table[index];
-        if (first == null) {
-            throw new NoSuchElementException();
-        }
         V result = null;
-        boolean found = false;
         do {
             if (first.key.equals(key)) {
                 result = first.value;
-                found = true;
                 break;
             }
             first = first.next;
         } while (first != null);
-        if (!found) {
-            throw new NoSuchElementException();
-        }
         return result;
     }
 
@@ -221,14 +215,14 @@ public class SimpleHashMap<K, V> {
      * Метод удаляет элемент с ключом null.
      * @return возвращает удалось ли провести операцию.
      */
-    private boolean deleteNullKey() {
-        boolean result = false;
+    private V deleteNullKey() {
+        V result = null;
         if (table[0] != null) {
+            result = table[0].value;
             table[0] = null;
             size--;
             threshold--;
             modCount++;
-            result = true;
         }
         return result;
     }
@@ -242,7 +236,7 @@ public class SimpleHashMap<K, V> {
      * @param key искомый ключ.
      * @return вернуть результат операции.
      */
-    public boolean delete(K key) {
+    public V delete(K key) {
         if (key == null) {
             return this.deleteNullKey();
         }
@@ -250,7 +244,7 @@ public class SimpleHashMap<K, V> {
         Node<K, V> tmp = table[index];
         Node<K, V> prev = null;
         if (tmp == null) {
-            return false;
+            return null;
         }
         boolean found = false;
         do {
@@ -261,8 +255,9 @@ public class SimpleHashMap<K, V> {
             prev = tmp;
             tmp = tmp.next;
         } while (tmp != null);
-        boolean result = false;
+        V result = null;
         if (found) {
+            result = tmp.value;
             Node<K, V> next = tmp.next;
             tmp.value = null;
             tmp.key = null;
@@ -275,7 +270,6 @@ public class SimpleHashMap<K, V> {
             size--;
             threshold--;
             modCount++;
-            result = true;
         }
         return result;
     }
