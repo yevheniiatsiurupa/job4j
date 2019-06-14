@@ -86,6 +86,23 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
         return rsl;
     }
 
+    public boolean isBinary() {
+        boolean result = true;
+        Queue<Node<E>> data = new LinkedList<>();
+        data.offer(this.root);
+        while (!data.isEmpty()) {
+            Node<E> el = data.poll();
+            if (!(el.leaves().size() <= 2)) {
+                result = false;
+                break;
+            }
+            for (Node<E> child : el.leaves()) {
+                data.offer(child);
+            }
+        }
+        return result;
+    }
+
     @Override
     public Iterator<E> iterator() {
         return new Iterator<>() {
@@ -97,20 +114,12 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             /**
              * Очередь хранит узлы для выдачи значений.
              */
-            private Queue<Node<E>> queue = new LinkedList<>();
+            private Queue<Node<E>> queue = new LinkedList<>(Collections.singletonList(root));
 
-            /**
-             * Хранит информацию о добавленном элементе корня.
-             */
-            private boolean rootAdded = false;
 
 
             @Override
             public boolean hasNext() {
-                if (!rootAdded) {
-                    queue.offer(root);
-                    rootAdded = true;
-                }
                 return !(queue.isEmpty());
             }
 
@@ -118,10 +127,6 @@ public class Tree<E extends Comparable<E>> implements SimpleTree<E> {
             public E next() {
                 if (modCount != currentMod) {
                     throw new ConcurrentModificationException();
-                }
-                if (!rootAdded) {
-                    queue.offer(root);
-                    rootAdded = true;
                 }
                 if (!this.hasNext()) {
                     throw new NoSuchElementException();

@@ -14,6 +14,9 @@ import static org.junit.Assert.*;
  */
 
 public class TreeTest {
+    /**
+     * Test add / findBy.
+     */
     @Test
     public void when6ElFindLastThen6() {
         Tree<Integer> tree = new Tree<>(1);
@@ -28,6 +31,9 @@ public class TreeTest {
         );
     }
 
+    /**
+     * Test add / findBy.
+     */
     @Test
     public void when6ElFindNotExitThenOptionEmpty() {
         Tree<Integer> tree = new Tree<>(1);
@@ -38,6 +44,9 @@ public class TreeTest {
         );
     }
 
+    /**
+     * Test iterate().
+     */
     @Test
     public void whenIterateThenShowAllElements() {
         Tree<Integer> tree = new Tree<>(1);
@@ -50,5 +59,33 @@ public class TreeTest {
         while (it.hasNext()) {
             System.out.println(it.next());
         }
+    }
+
+    /**
+     * Test isBinary.
+     */
+    @Test
+    public void whenHasTwoChildrenThenTrue() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        tree.add(2, 5);
+        tree.add(3, 6);
+        assertThat(tree.isBinary(), is(true));
+    }
+
+    /**
+     * Test isBinary.
+     */
+    @Test
+    public void whenHasThreeChildrenThenTrue() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        tree.add(1, 3);
+        tree.add(2, 4);
+        tree.add(2, 5);
+        tree.add(2, 6);
+        assertThat(tree.isBinary(), is(false));
     }
 }
