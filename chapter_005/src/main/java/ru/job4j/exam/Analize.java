@@ -11,32 +11,38 @@ import java.util.*;
 public class Analize {
     public Info diff(List<User> previous, List<User> current) {
         Info result = new Info();
-        HashSet<User> tmp = new HashSet<>(previous);
-        HashSet<User> tmp2 = new HashSet<>(current);
-        List<Integer> delChan = new ArrayList<>();
-        List<Integer> chanAdd = new ArrayList<>();
+        Map<Integer, String> prev = new HashMap<>();
+        Map<Integer, String> curr = new HashMap<>();
+        for (User tmp : previous) {
+            prev.put(tmp.id, tmp.name);
+        }
+        for (User tmp : current) {
+            curr.put(tmp.id, tmp.name);
+        }
 
-        boolean isAdded = false;
-        for (User us : current) {
-            isAdded = tmp.add(us);
-            if (isAdded) {
-                chanAdd.add(us.id);
+        int added = 0;
+        int changed = 0;
+        int deleted = 0;
+
+        for (Map.Entry<Integer, String> val : prev.entrySet()) {
+            if (!curr.containsKey(val.getKey())) {
+                deleted++;
+            } else {
+                if (!curr.get(val.getKey()).equals(val.getValue())) {
+                    changed++;
+                }
             }
         }
 
-        for (User us : previous) {
-            isAdded = tmp2.add(us);
-            if (isAdded) {
-                delChan.add(us.id);
+        for (Map.Entry<Integer, String> val : curr.entrySet()) {
+            if (!prev.containsKey(val.getKey())) {
+                added++;
             }
         }
 
-        HashSet<Integer> delChanAdd = new HashSet<>(delChan);
-        delChanAdd.addAll(chanAdd);
-
-        result.deleted = delChanAdd.size() - chanAdd.size();
-        result.changed = delChan.size() + chanAdd.size() - delChanAdd.size();
-        result.added = delChanAdd.size() - delChan.size();
+        result.deleted = deleted;
+        result.changed = changed;
+        result.added = added;
         return result;
     }
 
