@@ -1,10 +1,6 @@
 package ru.job4j.io;
 
 import org.junit.Test;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
