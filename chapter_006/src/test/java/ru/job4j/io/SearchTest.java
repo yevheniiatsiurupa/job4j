@@ -47,8 +47,13 @@ public class SearchTest {
         List<String> exts = Arrays.asList("txt", "doc");
         Search testSearch = new Search();
 
-        List<File> result = testSearch.files(root.getAbsolutePath(), exts);
+        List<File> result = testSearch.files(root.getAbsolutePath(), exts, true);
         List<File> expected = Arrays.asList(tempFile, tempFile2, tempFile4, tempFile5, tempFile7, tempFile8);
+
+        List<File> result2 = testSearch.files(root.getAbsolutePath(), exts, false);
+        List<File> expected2 = Arrays.asList(tempFile3, tempFile6, tempFile9);
+
         assertThat(result.containsAll(expected), is(true));
+        assertThat(result2.containsAll(expected2), is(true));
     }
 }

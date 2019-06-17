@@ -17,9 +17,10 @@ public class Search {
      * Метод возвращает список файлов с конкретным расширением.
      * @param parent путь к папке, в которой ведется поиск.
      * @param exts список искомых расширений.
+     * @param include true если нужен список файлов с расширением, false если исключая расширение.
      * @return возвращает список файлов с искомыми расширениями из директории.
      */
-    public List<File> files(String parent, List<String> exts) {
+    public List<File> files(String parent, List<String> exts, boolean include) {
         File file = new File(parent);
         Queue<File> checkExts = new LinkedList<>();
         checkExts.offer(file);
@@ -31,9 +32,8 @@ public class Search {
                     if (tmp.isDirectory()) {
                         checkExts.offer(tmp);
                     } else {
-                        String fileName = tmp.getName();
-                        String fileExt = fileName.substring(fileName.indexOf(".") + 1);
-                        if (exts.contains(fileExt)) {
+                        if ((include && this.checkExts(tmp, exts))
+                        || (!include && !this.checkExts(tmp, exts))) {
                             result.add(tmp);
                         }
                     }
@@ -42,4 +42,12 @@ public class Search {
         }
         return result;
     }
+
+    public boolean checkExts(File file, List<String> exts) {
+        String fileName = file.getName();
+        String fileExt = fileName.substring(fileName.indexOf(".") + 1);
+        return exts.contains(fileExt);
+    }
+
+
 }
