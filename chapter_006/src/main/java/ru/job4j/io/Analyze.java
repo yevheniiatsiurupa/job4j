@@ -31,18 +31,20 @@ public class Analyze {
 
         try (PrintWriter pw = new PrintWriter(new FileOutputStream(target))) {
             String start = null;
-            String end;
+            String end = null;
+            boolean check = true;
             for (String tmp : out) {
-                if (start == null
+                if (check
                         && (tmp.startsWith("400") || tmp.startsWith("500"))) {
                     start = tmp.substring(4);
+                    check = false;
                     continue;
                 }
-                if (start != null
+                if (!check
                         && (tmp.startsWith("200") || tmp.startsWith("300"))) {
                     end = tmp.substring(4);
                     pw.println(start + ";" + end);
-                    start = null;
+                    check = true;
                 }
             }
         } catch (Exception e) {
