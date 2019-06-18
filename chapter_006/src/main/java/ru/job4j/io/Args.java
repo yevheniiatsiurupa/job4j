@@ -37,7 +37,7 @@ public class Args {
             }
         }
         String extension = arguments[excl + 1];
-        return extension.substring(extension.indexOf("."));
+        return extension.substring(extension.indexOf(".") + 1);
     }
 
     /**

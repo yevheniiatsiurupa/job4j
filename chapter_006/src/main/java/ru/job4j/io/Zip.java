@@ -59,7 +59,7 @@ public class Zip {
         return tmp.files(root, exts, false);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
         Zip testZip = new Zip();
         Args testArg = new Args(args);
         String dir = testArg.directory();
