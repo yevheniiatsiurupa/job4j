@@ -15,8 +15,8 @@ public class AnalyzeTest {
     @Test
     public void whenInputFileThenOutputUnavailableTime() throws Exception {
         Analyze testAnalyze = new Analyze();
-        testAnalyze.unavailable("C:\\projects\\job4j\\server.log", "C:\\projects\\job4j\\unavailable.csv");
-        BufferedReader br = new BufferedReader(new FileReader("C:\\projects\\job4j\\unavailable.csv"));
+        testAnalyze.unavailable("./../server.log", "./../unavailable.csv");
+        BufferedReader br = new BufferedReader(new FileReader("./../unavailable.csv"));
         assertThat(br.readLine(), is("10:57:01;10:59:01"));
         assertThat(br.readLine(), is("11:01:02;11:02:02"));
     }
