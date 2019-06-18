@@ -2,6 +2,8 @@ package ru.job4j.io;
 
 import org.junit.Test;
 
+import java.io.File;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -17,7 +19,7 @@ public class ConfigTest {
      */
     @Test
     public void whenReadFromFileThenPutKeysToMap() {
-        Config testConf = new Config("C:\\projects\\job4j\\app.properties");
+        Config testConf = new Config("./../app.properties");
         testConf.load();
         assertThat(testConf.value("hibernate.connection.driver_class"),
                 is("org.postgresql.Driver"));
