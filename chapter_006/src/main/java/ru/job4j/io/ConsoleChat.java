@@ -15,6 +15,11 @@ public class ConsoleChat {
      */
     private File output;
 
+    private static final String EXIT = "закончить";
+    private static final String CONTINUED = "продолжить";
+    private static final String STOP = "стоп";
+
+
     /**
      * Конструктор.
      * При создании объекта создает временный файл во временной директории.
@@ -64,15 +69,15 @@ public class ConsoleChat {
             do {
                 answer = br.readLine();
                 pw.println(answer);
-                if (answer.equals("закончить")) {
+                if (EXIT.equals(answer)) {
                     exit = true;
                     continue;
                 }
-                if (answer.equals("стоп")) {
+                if (STOP.equals(answer)) {
                     stopped = true;
                     continue;
                 }
-                if (answer.equals("продолжить")) {
+                if (CONTINUED.equals(answer)) {
                     stopped = false;
                 }
                 if (!stopped) {
@@ -88,7 +93,7 @@ public class ConsoleChat {
     }
 
     public static void main(String[] args) throws Exception {
-        String inputPath = "chapter_006\\src\\main\\java\\ru\\job4j\\io\\resources\\ConsolePhrasesRus.txt";
+        String inputPath = "./ConsolePhrases.txt";
         new ConsoleChat(inputPath).init();
     }
 }
