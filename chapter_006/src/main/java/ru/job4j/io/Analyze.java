@@ -25,8 +25,10 @@ public class Analyze {
         List<String> out = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(source))) {
             out = br.lines().collect(Collectors.toList());
+            System.out.println("Данные из источника прочитаны");
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Ошибка при прочтении данных из источника");
         }
 
         try (PrintWriter pw = new PrintWriter(new FileOutputStream(target))) {
@@ -47,8 +49,10 @@ public class Analyze {
                     check = true;
                 }
             }
+            System.out.println("Данные записаны в файл");
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Ошибка при записи");
         }
     }
 
