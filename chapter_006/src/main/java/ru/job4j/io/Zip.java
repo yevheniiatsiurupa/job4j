@@ -22,30 +22,23 @@ public class Zip {
      * Создаем поток ввода из файла (out). Считываем все байты из файла источника (out.readAllBytes()).
      * Записываем считанные байты в файл zip.
      * Закрытие файла не требуется, так как используется блок try with resources.
-     * @param source файл, который добавляется в архив.
+     * @param sources файлы, который добавляется в архив.
      * @param target файл архива.
      */
-    public void packOne(File source, File target) {
+    public void pack(List<File> sources, File target) {
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-            zip.putNextEntry(new ZipEntry(source.getPath()));
-            try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
-                zip.write(out.readAllBytes());
+            for (File tmp : sources) {
+                zip.putNextEntry(new ZipEntry(tmp.getPath()));
+                try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(tmp))) {
+                    zip.write(out.readAllBytes());
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /**
-     * Метод добавляет список файлов в архив.
-     * @param sources список добавляемых файлов.
-     * @param target целевой файл - архив.
-     */
-    public void pack(List<File> sources, File target) {
-        for (File tmp : sources) {
-            this.packOne(tmp, target);
-        }
-    }
 
     /**
      * Метод возвращает список файлов, которые находятся в root и НЕ имеют расширения ext.
@@ -59,7 +52,7 @@ public class Zip {
         return tmp.files(root, exts, false);
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         Zip testZip = new Zip();
         Args testArg = new Args(args);
         String dir = testArg.directory();
