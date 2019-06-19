@@ -2,7 +2,9 @@ package ru.job4j.io;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConsoleChat {
     /**
@@ -15,9 +17,9 @@ public class ConsoleChat {
      */
     private File output;
 
-    private static final String EXIT = "закончить";
     private static final String CONTINUED = "продолжить";
     private static final String STOP = "стоп";
+    private Map<String, Boolean> answersTable = new HashMap<>();
 
 
     /**
@@ -32,6 +34,7 @@ public class ConsoleChat {
         String suffix = ".txt";
         this.output = File.createTempFile(prefix, suffix,
                 new File(System.getProperty("java.io.tmpdir")));
+        answersTable.put("закончить", true);
     }
 
     /**
@@ -63,14 +66,14 @@ public class ConsoleChat {
              PrintWriter pw = new PrintWriter(new FileOutputStream(this.output.getAbsolutePath()))) {
             List<String> consoleAnswers = this.lines(this.input);
             String answer;
-            String consoleReply = null;
+            String consoleReply;
+            boolean exit;
             boolean stopped = false;
-            boolean exit = false;
             do {
                 answer = br.readLine();
                 pw.println(answer);
-                if (EXIT.equals(answer)) {
-                    exit = true;
+                exit = answersTable.get(answer) != null;
+                if (exit) {
                     continue;
                 }
                 if (STOP.equals(answer)) {
