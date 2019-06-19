@@ -22,13 +22,16 @@ public class Zip {
      * Создаем поток ввода из файла (out). Считываем все байты из файла источника (out.readAllBytes()).
      * Записываем считанные байты в файл zip.
      * Закрытие файла не требуется, так как используется блок try with resources.
-     * @param sources файлы, который добавляется в архив.
+     * @param source файл, который добавляется в архив.
      * @param target файл архива.
      */
-    public void pack(List<File> sources, File target) {
+    public void pack(File source, File target, String ext) {
+        List<File> sources = this.seekBy(source.getAbsolutePath(), ext);
         try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
             for (File tmp : sources) {
-                zip.putNextEntry(new ZipEntry(tmp.getPath()));
+                zip.putNextEntry(new ZipEntry(
+                        tmp.getPath().substring(tmp.getPath().indexOf(source.getName()))
+                ));
                 try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(tmp))) {
                     zip.write(out.readAllBytes());
                 }
@@ -55,11 +58,10 @@ public class Zip {
     public static void main(String[] args) throws Exception {
         Zip testZip = new Zip();
         Args testArg = new Args(args);
-        String dir = testArg.directory();
+        File dir = new File(testArg.directory());
         String ext = testArg.exclude();
         String out = testArg.output();
-        List<File> forZip = testZip.seekBy(dir, ext);
         File targetZip = new File(out);
-        testZip.pack(forZip, targetZip);
+        testZip.pack(dir, targetZip, ext);
     }
 }
