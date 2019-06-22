@@ -6,7 +6,7 @@ select * from product as p
 where p.name like '%мороженное%';
 
 select * from product as p
-where p.expired_date between '2019-07-01' and '2019-07-31';
+where extract(month from p.expired_date) = extract(month from now()) + 1;
 
 select * from product as p
 where p.price = (select max(price) from product);
