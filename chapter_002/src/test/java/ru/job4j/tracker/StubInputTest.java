@@ -19,10 +19,10 @@ public class StubInputTest {
      */
     @Test
     public void whenUserAddItemThenTrackerHasNewItemWithSameName() {
-        Tracker tracker = new Tracker();
+        ITracker iTracker = new Tracker();
         Input input = new StubInput(new String[] {"0", "test name", "test desc", "6"});
-        new StartUI(input, tracker, System.out::println).init();
-        assertThat(tracker.findAll().get(0).getName(), is("test name"));
+        new StartUI(input, iTracker, System.out::println).init();
+        assertThat(iTracker.findAll().get(0).getName(), is("test name"));
     }
 
     /**
@@ -30,11 +30,11 @@ public class StubInputTest {
      */
     @Test
     public void whenUpdateThenTrackerHasUpdatedValue() {
-        Tracker tracker = new Tracker();
-        Item item = tracker.add(new Item("test name", "test desc", 123L));
+        ITracker iTracker = new Tracker();
+        Item item = iTracker.add(new Item("test name", "test desc", 123L));
         Input input = new StubInput(new String[] {"2", item.getId(), "test replace", "test desc new", "6"});
-        new StartUI(input, tracker, System.out::println).init();
-        assertThat(tracker.findAll().get(0).getName(), is("test replace"));
+        new StartUI(input, iTracker, System.out::println).init();
+        assertThat(iTracker.findAll().get(0).getName(), is("test replace"));
     }
 
     /**
@@ -42,13 +42,13 @@ public class StubInputTest {
      */
     @Test
     public void whenDeleteThenTrackerHasOneElement() {
-        Tracker tracker = new Tracker();
-        Item one = tracker.add(new Item("test name", "test desc", 123L));
-        Item two = tracker.add(new Item("test name2", "test desc2", 1234L));
+        ITracker iTracker = new Tracker();
+        Item one = iTracker.add(new Item("test name", "test desc", 123L));
+        Item two = iTracker.add(new Item("test name2", "test desc2", 1234L));
         Input input = new StubInput(new String[] {"3", two.getId(), "6"});
-        new StartUI(input, tracker, System.out::println).init();
+        new StartUI(input, iTracker, System.out::println).init();
         List<Item> result = new ArrayList<>();
         result.add(one);
-        assertThat(result, is(tracker.findAll()));
+        assertThat(result, is(iTracker.findAll()));
     }
 }

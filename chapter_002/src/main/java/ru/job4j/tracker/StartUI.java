@@ -19,7 +19,7 @@ public class StartUI {
     /**
      * Хранилище заявок.
      */
-    private final Tracker tracker;
+    private final ITracker iTracker;
 
     /**
      * Поле для организации вывода данных.
@@ -30,11 +30,11 @@ public class StartUI {
     /**
      * Конструктор, инициализирующий поля.
      * @param input ввод данных.
-     * @param tracker хранилище заявок.
+     * @param iTracker хранилище заявок.
      */
-    public StartUI(Input input, Tracker tracker, Consumer<String> output) {
+    public StartUI(Input input, ITracker iTracker, Consumer<String> output) {
         this.input = input;
-        this.tracker = tracker;
+        this.iTracker = iTracker;
         this.output = output;
     }
 
@@ -48,7 +48,7 @@ public class StartUI {
      * последующий показ меню, пока пользователь не введет пункт меню 6 - выход.
      */
     public void init() {
-        MenuTracker menu = new MenuTracker(this.input, this.tracker, output);
+        MenuTracker menu = new MenuTracker(this.input, this.iTracker, output);
         List<Integer> range = new ArrayList<>();
         menu.fillActions();
         for (int i = 0; i < menu.getActionsLength(); i++) {
@@ -67,7 +67,6 @@ public class StartUI {
 
     /**
      * Запуск программы.
-     * @param args
      */
     public static void main(String[] args) {
         new StartUI(new ValidateInput(new ConsoleInput()), new Tracker(), System.out::println).init();

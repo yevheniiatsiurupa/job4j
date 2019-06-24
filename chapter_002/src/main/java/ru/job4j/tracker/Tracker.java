@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @version 1.0.
  * @since 21/04/2019.
  */
-public class Tracker {
+public class Tracker implements ITracker {
     /**
      * Массив для хранения заявок.
      */

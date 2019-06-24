@@ -18,11 +18,11 @@ public class TrackerTest {
      */
     @Test
     public void whenAddNewItemThenTrackerHasSameItem() {
-        Tracker tracker = new Tracker();
+        ITracker iTracker = new Tracker();
         long created = System.currentTimeMillis();
         Item item = new Item("test1", "testDescription", created);
-        tracker.add(item);
-        Item result = tracker.findById(item.getId());
+        iTracker.add(item);
+        Item result = iTracker.findById(item.getId());
         assertThat(result.getName(), is(item.getName()));
     }
 
@@ -35,13 +35,13 @@ public class TrackerTest {
      */
     @Test
     public void whenReplaceNameThenReturnNewName() {
-        Tracker tracker = new Tracker();
+        ITracker iTracker = new Tracker();
         Item previous = new Item("test1", "testDescription", 123L);
-        tracker.add(previous);
+        iTracker.add(previous);
         Item next = new Item("test2", "testDescription2", 1234L);
         next.setId(previous.getId());
-        tracker.replace(previous.getId(), next);
-        assertThat(tracker.findById(previous.getId()).getName(), is("test2"));
+        iTracker.replace(previous.getId(), next);
+        assertThat(iTracker.findById(previous.getId()).getName(), is("test2"));
     }
 
     /**
@@ -52,16 +52,16 @@ public class TrackerTest {
      */
     @Test
     public void whenDeleteNameThenReturnNewArray() {
-        Tracker tracker = new Tracker();
+        ITracker iTracker = new Tracker();
         Item first = new Item("test1", "testDescription1", 123L);
         Item second = new Item("test2", "testDescription2", 1234L);
         Item third = new Item("test3", "testDescription3", 1235L);
-        tracker.add(first);
-        tracker.add(second);
-        tracker.add(third);
-        tracker.delete(first.getId());
+        iTracker.add(first);
+        iTracker.add(second);
+        iTracker.add(third);
+        iTracker.delete(first.getId());
         List<Item> expected = new ArrayList<>(Arrays.asList(second, third));
-        assertThat(tracker.findAll(), is(expected));
+        assertThat(iTracker.findAll(), is(expected));
     }
 
     /**
@@ -71,14 +71,14 @@ public class TrackerTest {
      */
     @Test
     public void whenFindAllThenReturnRange() {
-        Tracker tracker = new Tracker();
+        ITracker iTracker = new Tracker();
         Item first = new Item("test1", "testDesc1", 123L);
         Item second = new Item("test2", "testDesc2", 1234L);
         Item third = new Item("test3", "testDesc3", 1235L);
-        tracker.add(first);
-        tracker.add(second);
-        tracker.add(third);
-        List<Item> result = tracker.findAll();
+        iTracker.add(first);
+        iTracker.add(second);
+        iTracker.add(third);
+        List<Item> result = iTracker.findAll();
         List<Item> expected = new ArrayList<>(Arrays.asList(first, second, third));
         assertThat(result, is(expected));
     }
@@ -90,14 +90,14 @@ public class TrackerTest {
      */
     @Test
     public void whenFindByNameThenReturnTwoItems() {
-        Tracker tracker = new Tracker();
+        ITracker iTracker = new Tracker();
         Item first = new Item("test1", "testDesc1", 123L);
         Item second = new Item("test2", "testDesc2", 1234L);
         Item third = new Item("test1", "testDesc3", 1235L);
-        tracker.add(first);
-        tracker.add(second);
-        tracker.add(third);
-        List<Item> result = tracker.findByName("test1");
+        iTracker.add(first);
+        iTracker.add(second);
+        iTracker.add(third);
+        List<Item> result = iTracker.findByName("test1");
         List<Item> expected = new ArrayList<>(Arrays.asList(first, third));
         assertThat(result, is(expected));
     }
@@ -109,10 +109,10 @@ public class TrackerTest {
      */
     @Test
     public void whenFindByIdThenReturnElement() {
-        Tracker tracker = new Tracker();
+        ITracker iTracker = new Tracker();
         Item first = new Item("test1", "testDesc1", 12L);
-        tracker.add(first);
-        Item result = tracker.findById(first.getId());
+        iTracker.add(first);
+        Item result = iTracker.findById(first.getId());
         assertThat(result.getName(), is("test1"));
     }
 }

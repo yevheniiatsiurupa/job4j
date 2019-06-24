@@ -99,10 +99,10 @@ public class StartUITest {
      */
     @Test
     public void whenUserFindByIDThenOutputNameAndDesc() {
-        Tracker tracker = new Tracker();
-        Item first = tracker.add(new Item("test name1", "test desc1", 123L));
+        ITracker iTracker = new Tracker();
+        Item first = iTracker.add(new Item("test name1", "test desc1", 123L));
         Input input = new StubInput(new String[]{"4", first.getId(), "6"});
-        new StartUI(input, tracker, output).init();
+        new StartUI(input, iTracker, output).init();
         String firstLine = "------------ Поиск заявок по id --------------";
         assertThat(this.output.toString(), is(String.format(
                 "%s%s%sИмя заявки - test name1%sОписание заявки - test desc1%s%s",
@@ -114,10 +114,10 @@ public class StartUITest {
      */
     @Test
     public void whenUserFindByNameThenOutputItem() {
-        Tracker tracker = new Tracker();
-        Item first = tracker.add(new Item("test name1", "test desc1", 123L));
+        ITracker iTracker = new Tracker();
+        Item first = iTracker.add(new Item("test name1", "test desc1", 123L));
         Input input = new StubInput(new String[]{"5", first.getName(), "6"});
-        StartUI start = new StartUI(input, tracker, output);
+        StartUI start = new StartUI(input, iTracker, output);
         start.init();
         String firstLine = "------------ Поиск заявок по имени --------------";
         assertThat(this.output.toString(), is(String.format(
@@ -130,10 +130,10 @@ public class StartUITest {
      */
     @Test
     public void whenUserFindAllThenShowAllItemsNames() {
-        Tracker tracker = new Tracker();
-        Item first = tracker.add(new Item("test name1", "test desc1", 123L));
+        ITracker iTracker = new Tracker();
+        Item first = iTracker.add(new Item("test name1", "test desc1", 123L));
         Input input = new StubInput(new String[] {"1", "6"});
-        StartUI start = new StartUI(input, tracker, output);
+        StartUI start = new StartUI(input, iTracker, output);
         start.init();
         String firstLine = "------------ Показ существующих заявок --------------";
         assertThat(this.output.toString(), is(String.format(

@@ -1,6 +1,5 @@
 package ru.job4j.tracker;
 
-import javax.swing.tree.DefaultTreeCellEditor;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -14,7 +13,7 @@ public class MenuTracker {
     /**
      *  tracker хранит ссылку на объект.
      */
-    private Tracker tracker;
+    private ITracker iTracker;
 
     /**
      * Поле для организации вывода данных.
@@ -58,9 +57,9 @@ public class MenuTracker {
     /**
      * Конструктор.
      */
-    public MenuTracker(Input input, Tracker tracker, Consumer<String> output) {
+    public MenuTracker(Input input, ITracker iTracker, Consumer<String> output) {
         this.input = input;
-        this.tracker = tracker;
+        this.iTracker = iTracker;
         this.output = output;
     }
 
@@ -91,7 +90,7 @@ public class MenuTracker {
      * @param key ключ операции.
      */
     public void select(int key) {
-        this.actions.get(key).execute(this.input, this.tracker);
+        this.actions.get(key).execute(this.input, this.iTracker);
     }
 
     /**
@@ -122,16 +121,16 @@ public class MenuTracker {
         /**
          * Метод добавляет новую заявку в трекер.
          * @param input объект типа Input.
-         * @param tracker объект типа Tracker.
+         * @param iTracker объект типа Tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker iTracker) {
             output.accept("------------ Добавление новой заявки --------------");
             String name = input.ask("Введите имя заявки: ");
             String desc = input.ask("Введите описание заявки: ");
             long time = System.currentTimeMillis();
             Item item = new Item(name, desc, time);
-            tracker.add(item);
+            iTracker.add(item);
             output.accept("------------ Новая заявка с getId : " + item.getId() + "-----------");
         }
     }
@@ -150,12 +149,12 @@ public class MenuTracker {
         /**
          * Метод добавляет показывает все заявки, внесенные в трекер.
          * @param input объект типа Input.
-         * @param tracker объект типа Tracker.
+         * @param iTracker объект типа Tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker iTracker) {
             output.accept("------------ Показ существующих заявок --------------");
-            List<Item> show = tracker.findAll();
+            List<Item> show = iTracker.findAll();
             for (Item tmp : show) {
                 output.accept(String.format("Заявка %d - %s", show.indexOf(tmp) + 1, tmp.getName()));
             }
@@ -176,17 +175,17 @@ public class MenuTracker {
         /**
          * Метод редактирует заявку по номеру ID.
          * @param input объект типа Input.
-         * @param tracker объект типа Tracker.
+         * @param iTracker объект типа Tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker iTracker) {
             output.accept("------------ Редактирование заявок --------------");
             String id = input.ask("Введите id заявки, которую необходимо отредактировать: ");
             String name = input.ask("Введите имя заявки: ");
             String desc = input.ask("Введите описание заявки: ");
             long time = System.currentTimeMillis();
             Item item = new Item(name, desc, time);
-            boolean result = tracker.replace(id, item);
+            boolean result = iTracker.replace(id, item);
             if (result) {
                 output.accept("Редактирование прошло успешно.");
             } else {
@@ -209,13 +208,13 @@ public class MenuTracker {
         /**
          * Метод удаляет заявку по номеру ID.
          * @param input объект типа Input.
-         * @param tracker объект типа Tracker.
+         * @param iTracker объект типа Tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker iTracker) {
             output.accept("------------ Удаление заявок --------------");
             String id = input.ask("Введите id заявки, которую необходимо удалить: ");
-            boolean result = tracker.delete(id);
+            boolean result = iTracker.delete(id);
             if (result) {
                 output.accept("Удаление заявки прошло успешно.");
             } else {
@@ -238,13 +237,13 @@ public class MenuTracker {
         /**
          * Метод находит заявку по номеру ID.
          * @param input объект типа Input.
-         * @param tracker объект типа Tracker.
+         * @param iTracker объект типа Tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker iTracker) {
             output.accept("------------ Поиск заявок по id --------------");
             String id = input.ask("Введите id заявки, которую необходимо найти: ");
-            Item result = tracker.findById(id);
+            Item result = iTracker.findById(id);
             if (result != null) {
                 output.accept("Имя заявки - " + result.getName());
                 output.accept("Описание заявки - " + result.getDesc());
@@ -266,13 +265,13 @@ public class MenuTracker {
         /**
          * Метод находит заявку по названию.
          * @param input объект типа Input.
-         * @param tracker объект типа Tracker.
+         * @param iTracker объект типа Tracker.
          */
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker iTracker) {
             output.accept("------------ Поиск заявок по имени --------------");
             String id = input.ask("Введите имя заявки, которую необходимо найти: ");
-            List<Item> result = tracker.findByName(id);
+            List<Item> result = iTracker.findByName(id);
             for (Item tmp : result) {
                 output.accept("Заявка с номером id - " + tmp.getId());
             }
@@ -291,7 +290,7 @@ public class MenuTracker {
         }
 
         @Override
-        public void execute(Input input, Tracker tracker) {
+        public void execute(Input input, ITracker iTracker) {
         }
     }
 }
