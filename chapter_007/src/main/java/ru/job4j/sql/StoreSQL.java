@@ -72,6 +72,7 @@ public class StoreSQL implements  AutoCloseable {
                 "insert into entry (field) values (?);"
         )) {
             statement.executeUpdate("delete from entry;");
+            connection.setAutoCommit(false);
             for (int n = 1; n <= size; n++) {
                 st.setInt(1, n);
                 st.addBatch();
