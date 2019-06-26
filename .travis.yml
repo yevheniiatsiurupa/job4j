@@ -22,3 +22,9 @@ env:
 
 jdk:
   openjdk11
+
+services:
+  - postgresql
+
+before_install:
+  - psql -c 'create database tracker;' -U postgres
