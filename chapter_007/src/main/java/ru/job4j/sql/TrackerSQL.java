@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+/**
+ * @author Evgeniya Tsiurupa
+ * @version 1.0
+ * @since 26/06/2019
+ */
 
 public class TrackerSQL implements ITracker, AutoCloseable {
     /**
@@ -16,6 +21,9 @@ public class TrackerSQL implements ITracker, AutoCloseable {
      */
     private Connection connection;
 
+    public TrackerSQL(Connection connection) {
+        this.connection = connection;
+    }
 
     /**
      * Метод для подключения к базам данных sql.
@@ -173,8 +181,5 @@ public class TrackerSQL implements ITracker, AutoCloseable {
         }
     }
 
-    public static void main(String[] args) {
-        TrackerSQL testTracker = new TrackerSQL();
-        testTracker.init();
-    }
+
 }
