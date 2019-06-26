@@ -74,8 +74,9 @@ public class StoreSQL implements  AutoCloseable {
             statement.executeUpdate("delete from entry;");
             for (int n = 1; n <= size; n++) {
                 st.setInt(1, n);
-                st.executeUpdate();
+                st.addBatch();
             }
+            st.executeBatch();
         } catch (Exception e) {
             e.printStackTrace();
         }
