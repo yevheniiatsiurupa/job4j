@@ -65,7 +65,7 @@ public class StoreSQL implements  AutoCloseable {
      * Метод записывает в таблицу entry N строк, заполняет их числами от 1 до n.
      * @param size количество записанных строк.
      */
-    public void generate(int size) throws Exception{
+    public void generate(int size) throws Exception {
         this.createTable();
         try (Statement statement = connection.createStatement();
                 PreparedStatement st = connection.prepareStatement(
@@ -108,7 +108,7 @@ public class StoreSQL implements  AutoCloseable {
         }
     }
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         Config config = new Config();
         config.init();
         StoreSQL store = new StoreSQL(config);
