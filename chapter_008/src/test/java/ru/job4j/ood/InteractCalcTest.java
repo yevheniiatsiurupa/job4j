@@ -21,6 +21,8 @@ import static org.junit.Assert.assertThat;
 
 
 public class InteractCalcTest {
+    private String ln = System.lineSeparator();
+
     /**
      * Поле запоминает стандартный вывод в консоль.
      */
@@ -73,7 +75,7 @@ public class InteractCalcTest {
     @Test
     public void whenAddTwoNumbersThenSum() {
         Input input = new StubInput(new String[]{"+", "1", "2", "q"});
-        String result = "Result: 3.0\r\n";
+        String result = "Result: 3.0" + ln;
         new InteractCalc(new Calculator(), input).init();
         assertThat(this.output.toString(), is(result));
     }
@@ -84,8 +86,7 @@ public class InteractCalcTest {
     @Test
     public void whenAddThreeNumbersThenSum() {
         Input input = new StubInput(new String[]{"+", "1", "2", "c", "+", "5", "q"});
-
-        String result = "Result: 3.0\r\nResult: 8.0\r\n";
+        String result = String.format("%s%s%s%s", "Result: 3.0", ln, "Result: 8.0", ln);
         new InteractCalc(new Calculator(), input).init();
         assertThat(this.output.toString(), is(result));
     }
