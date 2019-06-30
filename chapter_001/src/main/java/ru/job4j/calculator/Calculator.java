@@ -44,4 +44,31 @@ public class Calculator {
     public double multiply(double first, double second) {
         return first * second;
     }
+
+    /**
+     * Method sin.
+     * @param first Enter the first number here.
+     * @return sine of the number.
+     */
+    public double sin(double first) {
+        return Math.sin(first);
+    }
+
+    /**
+     * Method cos.
+     * @param first Enter the first number here.
+     * @return cosine of the number.
+     */
+    public double cos(double first) {
+        return Math.cos(first);
+    }
+
+    /**
+     * Method square root.
+     * @param first Enter the first number here.
+     * @return square root of the number.
+     */
+    public double sqrt(double first) {
+        return Math.sqrt(first);
+    }
 }

@@ -13,8 +13,8 @@ import java.util.List;
  */
 
 public class InteractCalc {
-    private Calculator calculator;
     private Input input;
+    private Operations operations;
 
     /**
      * Поле хранит результат предыдущего действия.
@@ -26,10 +26,6 @@ public class InteractCalc {
      */
     private boolean useResult = false;
 
-    /**
-     * Список содержит возможные операции калькулятора.
-     */
-    private List<String> operations = new ArrayList<>();
 
     /**
      * Список содержит пункты меню.
@@ -39,16 +35,12 @@ public class InteractCalc {
     /**
      * Конструктор.
      * При создании объекта InteractCalc заполняются списки operations, menuOptions.
-     * @param calculator объект Calculator.
      * @param input объект для ввода данных.
      */
-    public InteractCalc(Calculator calculator, Input input) {
-        this.calculator = calculator;
+    public InteractCalc(Input input, Operations operations) {
         this.input = input;
-        operations.add("+");
-        operations.add("-");
-        operations.add("*");
-        operations.add("/");
+        this.operations = operations;
+        this.operations.fillOper();
         menuOptions.add("c");
         menuOptions.add("n");
         menuOptions.add("q");
@@ -67,17 +59,6 @@ public class InteractCalc {
         return sb.toString();
     }
 
-    /**
-     * Метод проверяет, что ключ содержится в списке возможных операций.
-     * @param key ключ.
-     * @return возвращает ключ, если он содержится в списке.
-     */
-    private String checkOperationInput(String key) {
-        if (!operations.contains(key)) {
-            throw new InvalidActionException("Invalid input");
-        }
-        return key;
-    }
 
     /**
      * Метод проверяет, что ключ содержится в списке пунктов меню.
@@ -99,8 +80,8 @@ public class InteractCalc {
         String operation = null;
         do {
             try {
-                String inputOper = input.ask("Choose operation: + - * /");
-                operation = this.checkOperationInput(inputOper);
+                String inputOper = input.ask("Choose operation:" + operations.showKeys());
+                operation = operations.checkOperationInput(inputOper);
                 validOperInput = true;
             } catch (InvalidActionException iae) {
                 System.out.println("Please choose operations from list.");
@@ -128,27 +109,22 @@ public class InteractCalc {
     }
 
     /**
-     * Метод выполняет операцию над двумя числами.
-     * @param operation операция, которую необходимо выполнить.
-     * @param first первое число.
-     * @param second второе число.
-     * @return возвращает результат действия.
+     * Метод для получения списка аргументов.
+     * @param key ключ операции.
+     * @return возвращает список аргументов нужной длины для операции.
      */
-    private double performOperation(String operation, double first, double second) {
-        double result;
-        if (operation.equals("+")) {
-            result = calculator.add(first, second);
-        } else if (operation.equals("-")) {
-            result = calculator.subtract(first, second);
-        } else if (operation.equals("*")) {
-            result = calculator.multiply(first, second);
-        } else if (operation.equals("/")) {
-            result = calculator.div(first, second);
-        } else {
-            throw new InvalidActionException("Invalid input");
+    private List<Double> getArgs(String key) {
+        List<Double> result = new ArrayList<>();
+        int argNumb = operations.getArgsNumbByKey(key);
+        double first = useResult ? calcResult : Double.parseDouble(input.ask("Enter the first number"));
+        result.add(first);
+        for (int i = 1; i < argNumb; i++) {
+            double next = Double.parseDouble(input.ask("Enter the second number"));
+            result.add(next);
         }
         return result;
     }
+
 
     /**
      * Метод для запуска калькулятора.
@@ -157,9 +133,8 @@ public class InteractCalc {
         boolean exit = false;
         do {
             String operation = this.getOperation();
-            double first = useResult ? calcResult : Double.parseDouble(input.ask("Enter the first number"));
-            double second = Double.parseDouble(input.ask("Enter the second number"));
-            double result = this.performOperation(operation, first, second);
+            List<Double> args = this.getArgs(operation);
+            double result = this.operations.performOper(operation, args);
             System.out.println("Result: " + result);
 
             String answer = this.getMenuOption();
@@ -175,6 +150,6 @@ public class InteractCalc {
     }
 
     public static void main(String[] args) {
-        new InteractCalc(new Calculator(), new ConsoleInput()).init();
+        new InteractCalc(new ConsoleInput(), new EngOperations(new Calculator())).init();
     }
 }

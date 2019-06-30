@@ -76,7 +76,7 @@ public class InteractCalcTest {
     public void whenAddTwoNumbersThenSum() {
         Input input = new StubInput(new String[]{"+", "1", "2", "q"});
         String result = "Result: 3.0" + ln;
-        new InteractCalc(new Calculator(), input).init();
+        new InteractCalc(input, new Operations(new Calculator())).init();
         assertThat(this.output.toString(), is(result));
     }
 
@@ -87,7 +87,18 @@ public class InteractCalcTest {
     public void whenAddThreeNumbersThenSum() {
         Input input = new StubInput(new String[]{"+", "1", "2", "c", "+", "5", "q"});
         String result = String.format("%s%s%s%s", "Result: 3.0", ln, "Result: 8.0", ln);
-        new InteractCalc(new Calculator(), input).init();
+        new InteractCalc(input, new Operations(new Calculator())).init();
+        assertThat(this.output.toString(), is(result));
+    }
+
+    /**
+     * Test InteractCalc.
+     */
+    @Test
+    public void whenFindSineThenResult() {
+        Input input = new StubInput(new String[]{"sin", "0", "q"});
+        String result = "Result: 0.0" + ln;
+        new InteractCalc(input, new EngOperations(new Calculator())).init();
         assertThat(this.output.toString(), is(result));
     }
 }
