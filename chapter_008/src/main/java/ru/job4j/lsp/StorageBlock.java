@@ -27,7 +27,7 @@ public class StorageBlock {
     public void add(Food food) {
         for (Storage tmp : storage) {
             if (tmp.accept(food)) {
-                tmp.getList().add(food);
+                tmp.add(food);
                 break;
             }
         }

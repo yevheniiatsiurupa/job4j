@@ -15,4 +15,8 @@ public class Trash implements Storage {
     public boolean accept(Food food) {
         return food.checkDate(System.currentTimeMillis()) > 100;
     }
+
+    public void add(Food food) {
+        list.add(food);
+    }
 }

@@ -15,4 +15,8 @@ public class Warehouse  implements  Storage {
     public boolean accept(Food food) {
         return food.checkDate(System.currentTimeMillis()) < 25;
     }
+
+    public void add(Food food) {
+        list.add(food);
+    }
 }

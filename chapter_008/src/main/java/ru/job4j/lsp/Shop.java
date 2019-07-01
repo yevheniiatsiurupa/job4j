@@ -23,4 +23,8 @@ public class Shop implements Storage {
         }
         return result;
     }
+
+    public void add(Food food) {
+        list.add(food);
+    }
 }

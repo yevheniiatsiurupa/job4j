@@ -13,4 +13,6 @@ public interface Storage {
      * Метод возвращает список с продуктами в данном хранилище.
      */
     List<Food> getList();
+
+    void add(Food food);
 }
