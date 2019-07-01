@@ -16,7 +16,6 @@ public class ControlQuality {
 
     /**
      * Конструктор.
-     * @param storageBlock
      */
     public ControlQuality(StorageBlock storageBlock) {
         this.storageBlock = storageBlock;
