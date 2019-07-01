@@ -1,19 +1,35 @@
 package ru.job4j.lsp;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class StorageBlock {
-    private Warehouse warehouse = new Warehouse();
-    private Shop shop = new Shop();
-    private Trash trash = new Trash();
+    private List<Storage> storage = new ArrayList<>();
 
-    public Warehouse getWarehouse() {
-        return warehouse;
+    /**
+     * Конструктор.
+     * При создании блока хранилищ создаются отдельные хранилища и добавляются в список.
+     */
+    public StorageBlock() {
+        this.storage.add(new Warehouse());
+        this.storage.add(new Shop());
+        this.storage.add(new Trash());
     }
 
-    public Shop getShop() {
-        return shop;
+    public List<Storage> getStorage() {
+        return storage;
     }
 
-    public Trash getTrash() {
-        return trash;
+    /**
+     * Метод добавляет продукт в хранилище, где accept возвращает true.
+     * @param food добавляемый продукт.
+     */
+    public void add(Food food) {
+        for (Storage tmp : storage) {
+            if (tmp.accept(food)) {
+                tmp.getList().add(food);
+                break;
+            }
+        }
     }
 }
