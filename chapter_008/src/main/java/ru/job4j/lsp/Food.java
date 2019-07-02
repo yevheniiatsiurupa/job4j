@@ -7,13 +7,17 @@ public class Food {
     private int price;
     private int discount;
     private int possibleDiscount;
+    private boolean recycle;
+    private boolean coldTemp;
 
-    public Food(String name, long expireDate, long createDate, int price, int possibleDiscount) {
+    public Food(String name, long expireDate, long createDate, int price, int possibleDiscount, boolean recycle, boolean coldTemp) {
         this.name = name;
         this.expireDate = expireDate;
         this.createDate = createDate;
         this.price = price;
         this.possibleDiscount = possibleDiscount;
+        this.recycle = recycle;
+        this.coldTemp = coldTemp;
     }
 
     public String getName() {
@@ -38,6 +42,14 @@ public class Food {
 
     public int getPossibleDiscount() {
         return possibleDiscount;
+    }
+
+    public boolean isRecycle() {
+        return recycle;
+    }
+
+    public boolean isColdTemp() {
+        return coldTemp;
     }
 
     public void setDiscount(int discount) {

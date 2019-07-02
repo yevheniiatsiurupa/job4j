@@ -8,12 +8,8 @@ public class StorageBlock {
 
     /**
      * Конструктор.
-     * При создании блока хранилищ создаются отдельные хранилища и добавляются в список.
      */
     public StorageBlock() {
-        this.storage.add(new Warehouse());
-        this.storage.add(new Shop());
-        this.storage.add(new Trash());
     }
 
     public List<Storage> getStorage() {
@@ -31,5 +27,9 @@ public class StorageBlock {
                 break;
             }
         }
+    }
+
+    public void addStorage(Storage st) {
+        storage.add(st);
     }
 }
