@@ -15,4 +15,6 @@ public interface Storage {
     List<Food> getList();
 
     void add(Food food);
+
+    List<Food> removeFood();
 }

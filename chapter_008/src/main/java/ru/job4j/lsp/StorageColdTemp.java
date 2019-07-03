@@ -1,5 +1,7 @@
 package ru.job4j.lsp;
 
+import java.util.List;
+
 public class StorageColdTemp  extends StorageDecorator {
     private Storage storage;
 
@@ -19,5 +21,12 @@ public class StorageColdTemp  extends StorageDecorator {
         } else {
             this.storage.add(food);
         }
+    }
+
+    @Override
+    public List<Food> removeFood() {
+        List<Food> result = super.removeFood();
+        result.addAll(storage.removeFood());
+        return result;
     }
 }

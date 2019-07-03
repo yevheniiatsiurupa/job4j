@@ -1,6 +1,9 @@
 package ru.job4j.lsp;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TrashRecycle extends StorageDecorator {
     private Storage storage;
 
@@ -20,5 +23,12 @@ public class TrashRecycle extends StorageDecorator {
         } else {
             this.storage.add(food);
         }
+    }
+
+    @Override
+    public List<Food> removeFood() {
+        List<Food> result = super.removeFood();
+        result.addAll(storage.removeFood());
+        return result;
     }
 }

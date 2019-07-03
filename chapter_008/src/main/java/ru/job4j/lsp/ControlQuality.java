@@ -2,15 +2,12 @@ package ru.job4j.lsp;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class ControlQuality {
-    /**
-     * Поле хранит ссылку на хранилище, куда следует добавлять продукт.
-     */
-    private Storage storage;
 
     /**
-     * Ссылка на блок хранилищ Shop + Warehouse + Trash.
+     * Ссылка на блок хранилищ.
      */
     private StorageBlock storageBlock;
 
@@ -29,6 +26,13 @@ public class ControlQuality {
      */
     public void addProduct(Food item) {
         this.storageBlock.add(item);
+    }
+
+    public void resort(StorageBlock sb) {
+        List<Food> removed = sb.removeAllFood();
+        for (Food tmp : removed) {
+            sb.add(tmp);
+        }
     }
 
     public static void main(String[] args) {
@@ -60,6 +64,8 @@ public class ControlQuality {
         controlQuality.addProduct(item3);
         controlQuality.addProduct(item4);
         controlQuality.addProduct(item5);
+
+        controlQuality.resort(sb);
 
         System.out.println(one.getList());
         System.out.println(two.getList());

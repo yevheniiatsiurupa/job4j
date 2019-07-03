@@ -1,5 +1,7 @@
 package ru.job4j.lsp;
 
+import java.util.List;
+
 public class WarehouseExtra extends StorageDecorator {
     private Storage storage;
 
@@ -17,5 +19,12 @@ public class WarehouseExtra extends StorageDecorator {
         if (this.accept(food)) {
             super.add(food);
         }
+    }
+
+    @Override
+    public List<Food> removeFood() {
+        List<Food> result = super.removeFood();
+        result.addAll(storage.removeFood());
+        return result;
     }
 }

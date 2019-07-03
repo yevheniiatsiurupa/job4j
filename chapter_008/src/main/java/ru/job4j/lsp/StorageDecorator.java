@@ -17,4 +17,11 @@ public abstract class StorageDecorator implements Storage {
         this.list.add(food);
     }
 
+    @Override
+    public List<Food> removeFood() {
+        List<Food> result = this.list;
+        this.list = new ArrayList<>();
+        return result;
+    }
+
 }

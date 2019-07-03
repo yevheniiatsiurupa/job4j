@@ -32,4 +32,12 @@ public class StorageBlock {
     public void addStorage(Storage st) {
         storage.add(st);
     }
+
+    public List<Food> removeAllFood() {
+        List<Food> removed = new ArrayList<>();
+        for (Storage tmp : storage) {
+            removed.addAll(tmp.removeFood());
+        }
+        return removed;
+    }
 }

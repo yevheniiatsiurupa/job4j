@@ -16,7 +16,15 @@ public class Trash implements Storage {
         return food.checkDate(System.currentTimeMillis()) > 100;
     }
 
+    @Override
     public void add(Food food) {
         list.add(food);
+    }
+
+    @Override
+    public List<Food> removeFood() {
+        List<Food> result = this.list;
+        this.list = new ArrayList<>();
+        return result;
     }
 }
