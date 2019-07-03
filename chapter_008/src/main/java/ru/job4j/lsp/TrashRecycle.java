@@ -10,6 +10,15 @@ public class TrashRecycle extends StorageDecorator {
 
     @Override
     public boolean accept(Food food) {
-        return this.storage.accept(food) && food.isRecycle();
+        return this.storage.accept(food);
+    }
+
+    @Override
+    public void add(Food food) {
+        if (food.isRecycle()) {
+            super.add(food);
+        } else {
+            this.storage.add(food);
+        }
     }
 }

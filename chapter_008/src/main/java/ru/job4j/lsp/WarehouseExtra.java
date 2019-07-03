@@ -11,4 +11,11 @@ public class WarehouseExtra extends StorageDecorator {
     public boolean accept(Food food) {
         return this.storage.accept(food);
     }
+
+    @Override
+    public void add(Food food) {
+        if (this.accept(food)) {
+            super.add(food);
+        }
+    }
 }
