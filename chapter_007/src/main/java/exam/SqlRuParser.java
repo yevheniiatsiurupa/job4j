@@ -43,12 +43,15 @@ public class SqlRuParser {
             String website = "https://www.sql.ru/forum/job-offers/";
             int pageNumber = this.getPageNumber(website);
 
-            page_loop:
+            List<String> search = Arrays.asList("java", "Java");
+            List<String> noSearch = Arrays.asList("JavaScript", "Java Script");
+
             for (int i = 1; i < pageNumber; i++) {
                 String onePage = website + i;
                 Document doc = Jsoup.connect(onePage).get();
                 Elements tableElem = doc.getElementsByAttributeValue("class", "forumTable");
                 Elements trElem = tableElem.first().getElementsByTag("tr");
+                long timeEditVac = 0;
 
                 for (int j = 1; j < trElem.size(); j++) {
                     Element tmp = trElem.get(j);
@@ -61,9 +64,9 @@ public class SqlRuParser {
                         continue;
                     }
 
-                    long timeEditVac = this.convertString(timeElem.text());
+                    timeEditVac = this.convertString(timeElem.text());
                     if (timeEditVac < this.timeCompare) {
-                        break page_loop;
+                        continue;
                     }
 
                     String url = aElem.attr("href");
@@ -74,9 +77,12 @@ public class SqlRuParser {
                         continue;
                     }
 
-                    if (this.checkString(text)) {
+                    if (this.checkString(text, search, noSearch)) {
                         db.addVacancy(name, text, url, timeVac);
                     }
+                }
+                if (timeEditVac < this.timeCompare) {
+                    break;
                 }
             }
         } catch (Exception e) {
@@ -124,13 +130,27 @@ public class SqlRuParser {
     }
 
     /**
-     * Метод проверяет наличие слова java и отсутствие слова javascript в строке.
+     * Метод проверяет наличие слов из search и отсутствие слов из списка noSearch в строке.
      * @param text входящая строка.
+     * @param search список слов, которые ищутся во входящей строке.
+     * @param noSearch список слов, которые должны отсутствовать во входящей строке.
      */
-    private boolean checkString(String text) {
-        boolean contJava = text.contains("java") || text.contains("Java");
-        boolean contJavaScript = text.contains("JavaScript") || text.contains("Java Script");
-        return contJava && !contJavaScript;
+    private boolean checkString(String text, List<String> search, List<String> noSearch) {
+        boolean contSearch = false;
+        for (String tmp : search) {
+            if (text.contains(tmp)) {
+                contSearch = true;
+                break;
+            }
+        }
+        boolean contNoSearch = false;
+        for (String tmp : noSearch) {
+            if (text.contains(tmp)) {
+                contNoSearch = true;
+                break;
+            }
+        }
+        return contSearch && !contNoSearch;
     }
 
     /**
