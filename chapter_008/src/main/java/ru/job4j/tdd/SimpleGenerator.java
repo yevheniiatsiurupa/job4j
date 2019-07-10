@@ -1,9 +1,6 @@
 package ru.job4j.tdd;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,8 +39,7 @@ public class SimpleGenerator {
      * В каждом найденном совпадении берем группу 1 (текст ключ) и добавляем в список setKeys.
      * Получаем список с ключами, найденными в исходном тексте.
      * Проверяем, что полученная карта map содержит все ключи из setKeys и не содержит лишних, если нет - исключение.
-     * Проходим по всем ключам setKeys, вставляем их в новое регулярное выражение.
-     * Производим замену всех совпадений нового выражения на соответствующее значение из карты.
+     * Перезапускаем matcher, проходим снова по найденным значениям, заменяем их на соответствующее значение из карты.
      *
      * Пример template "I am ${name}, Who are ${subject}? "
      * Пример map name -> "Petr", subject -> "you"
@@ -67,12 +63,14 @@ public class SimpleGenerator {
         if (!map.keySet().containsAll(this.setKeys)) {
             throw new NotEnoughKeysException("There are not enough keys.");
         }
-        String result = template;
-        for (String tmp : setKeys) {
-            String repl = "\\$\\{" + tmp + "\\}";
-            result = result.replaceAll(repl, map.get(tmp));
+
+        matcher.reset();
+        while (matcher.find()) {
+            String found = Pattern.quote(matcher.group());
+            String repl = map.get(matcher.group(1));
+            template = template.replaceFirst(found, repl);
         }
-        return result;
+        return template;
     }
 
     public static void main(String[] args) {
