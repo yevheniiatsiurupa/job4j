@@ -2,14 +2,19 @@ package ru.job4j.garb;
 
 public class User {
     private String name;
+    private String surname;
+    private String nickname;
     private int age;
-    private long[] time;
+//    private long[] time;
 
-    public User(String name, int age) {
+    public User(String name, String surname, String nickname, int age) {
         this.name = name;
+        this.surname = surname;
+        this.nickname = nickname;
         this.age = age;
-        this.time = new long[20000];
+//        this.time = new long[200];
     }
+
 
     @Override
     public void finalize() throws Throwable {
@@ -19,16 +24,12 @@ public class User {
 
     public static void main(String[] args) {
         System.out.println("start");
-        User u1 = new User("user1", 19);
-        System.out.println(u1);
-        u1 = null;
-        User u2 = new User("user2", 19);
-        System.out.println(u2);
-        u2 = null;
-        User u3 = new User("user3", 19);
-        System.out.println(u3);
-        u3 = null;
-
+        for (int i = 0; i < 200; i++) {
+            User u1 = new User("User1", "surname1", "nickname", 16);
+            System.out.println("user" + i);
+            u1 = null;
+        }
+        System.out.println("finish");
         System.out.println("finish");
     }
 }
