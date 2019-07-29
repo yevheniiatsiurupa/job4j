@@ -52,7 +52,7 @@ public class RectangleMove implements Runnable {
     public void run() {
         Direction currDir = new Direction(1, 0);
 
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             if (!this.checkPosition()) {
                 currDir = this.getDirection();
             }
@@ -62,7 +62,7 @@ public class RectangleMove implements Runnable {
             try {
                 Thread.sleep(60);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
