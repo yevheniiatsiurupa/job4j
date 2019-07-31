@@ -11,7 +11,7 @@ import java.util.NoSuchElementException;
  * @since 09/06/2019
  */
 
-public class SimpleContainer<E> implements Iterable<E> {
+public class SimpleContainer<E> implements ContainerInterface<E> {
     /**
      * Поле.
      * Динамический контейнер.
@@ -48,6 +48,7 @@ public class SimpleContainer<E> implements Iterable<E> {
      * Метод для добавления элемента в список.
      * @param value добавляемый элемент.
      */
+    @Override
     public void add(E value) {
         if (size >= container.length) {
             this.grow();
@@ -61,6 +62,7 @@ public class SimpleContainer<E> implements Iterable<E> {
      * @param index индекс элемента.
      * @return возвращает элемент из массива по индексу.
      */
+    @Override
     public E get(int index) {
         if (index < 0 || index > size) {
             throw new NoSuchElementException();
