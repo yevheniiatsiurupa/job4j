@@ -20,17 +20,17 @@ public class RectangleMove implements Runnable {
     /**
      * Размер поля Х, по которому перемещается прямоугольник.
      */
-    private int limitX;
+    private final int limitX;
 
     /**
      * Размер поля У, по которому перемещается прямоугольник.
      */
-    private int limitY;
+    private final int limitY;
 
     /**
      * Поле хранит список возможных перемещений (delta): 0, 1, -1.
      */
-    private List<Integer> rand;
+    private final List<Integer> rand;
 
     public RectangleMove(Rectangle rect, int limitX, int limitY) {
         this.rect = rect;
