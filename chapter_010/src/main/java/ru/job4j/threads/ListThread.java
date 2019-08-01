@@ -12,7 +12,7 @@ public class ListThread<E> extends Thread {
     }
 
     @Override
-    public void run(){
+    public void run() {
         Iterator<E> it = this.list.iterator();
         while (it.hasNext()) {
             try {
