@@ -98,9 +98,8 @@ public class SimpleBlockingQueueTest {
 
         producer1.start();
         producer2.start();
-        consumer.start();
-
         producer1.join();
+        consumer.start();
         producer2.join();
         consumer.join();
 
