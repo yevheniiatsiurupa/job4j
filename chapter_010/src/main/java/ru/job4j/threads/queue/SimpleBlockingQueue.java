@@ -18,11 +18,13 @@ public class SimpleBlockingQueue<T> {
     private final Queue<T> queue = new LinkedList<>();
     private final int maxSize;
 
-
     public SimpleBlockingQueue(int maxSize) {
         this.maxSize = maxSize;
     }
 
+    public synchronized int getSize() {
+        return this.queue.size();
+    }
 
     public void offer(T value) throws InterruptedException {
         synchronized (this) {
