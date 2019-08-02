@@ -52,45 +52,11 @@ public class Downloader implements Runnable {
             HttpURLConnection connection = (HttpURLConnection) ur.openConnection();
             BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(this.target));
-            long prevSize = this.target.length();
-            Thread curr = Thread.currentThread();
-
-            Thread t = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        int c = bis.read();
-                        while (c != -1) {
-                            bos.write(c);
-                            c = bis.read();
-                        }
-                        curr.interrupt();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            };
-            t.start();
-
-            while (!Thread.currentThread().isInterrupted()) {
-                try {
-                    Thread.sleep(1000);
-                    long size = this.target.length();
-                    long diff = size - prevSize;
-                    System.out.println("Downloaded for 1 second: " + diff / 1000);
-                    if (diff > speed * 1000) {
-                        long pause = diff / (speed * 1000);
-                        t.sleep(pause * 1000);
-                        System.out.println("пауза");
-                    }
-                    prevSize = size;
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-
+            int c = bis.read();
+            while (c != -1) {
+                bos.write(c);
+                c = bis.read();
             }
-
             bis.close();
             bos.close();
         } catch (Exception e) {
@@ -99,11 +65,31 @@ public class Downloader implements Runnable {
     }
 
     public static void main(String[] args) throws Exception {
-        String url = "http://jeisson.ecci.ucr.ac.cr/tmp/books/java/Java%20How%20to%20Program,%2010ed%20(early%20objects)%20-%20P.J.Deitel,%20H.M.Deitel%20%5B2014%5D.pdf";
+        String url = "https://www.oracle.com/technetwork/java/javase/memorymanagement-whitepaper-150215.pdf";
         long speed = 200;
         File target = new File("chapter_010/src/main/resources/abc.pdf");
         target.createNewFile();
         Downloader first = new Downloader(url, speed, target);
-        new Thread(first).start();
+
+        Thread t = new Thread(first);
+        t.start();
+        long prevSize = 0;
+
+        while (t.isAlive()) {
+            try {
+                Thread.sleep(1000);
+                long size = target.length();
+                long diff = size - prevSize;
+                System.out.println("Downloaded for 1 second: " + diff / 1000);
+                if (diff > speed * 1000) {
+                    long pause = diff / (speed * 1000);
+                    t.sleep(pause * 1000);
+                    System.out.println("пауза");
+                }
+                prevSize = size;
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
     }
 }
