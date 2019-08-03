@@ -1,4 +1,4 @@
-package ru.job4j.threads;
+package ru.job4j.threads.monitor;
 
 public class UserStorageThread  extends Thread {
     private UserStorage storage;

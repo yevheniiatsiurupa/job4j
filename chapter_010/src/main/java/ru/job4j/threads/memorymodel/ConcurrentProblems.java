@@ -1,4 +1,4 @@
-package ru.job4j.threads;
+package ru.job4j.threads.memorymodel;
 
 public class ConcurrentProblems {
     private static int shared = 0;

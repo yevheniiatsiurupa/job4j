@@ -1,7 +1,11 @@
-package ru.job4j.threads;
+package ru.job4j.threads.monitor;
 
 
 import org.junit.Test;
+import ru.job4j.threads.monitor.User;
+import ru.job4j.threads.monitor.UserStorage;
+import ru.job4j.threads.monitor.UserStorageThread;
+
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

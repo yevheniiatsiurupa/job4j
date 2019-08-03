@@ -1,4 +1,4 @@
-package ru.job4j.threads;
+package ru.job4j.threads.monitor;
 
 import ru.job4j.list.ContainerInterface;
 

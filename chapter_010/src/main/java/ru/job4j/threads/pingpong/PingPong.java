@@ -1,4 +1,4 @@
-package ru.job4j.threads;
+package ru.job4j.threads.pingpong;
 
 import javafx.application.Application;
 import javafx.scene.Group;

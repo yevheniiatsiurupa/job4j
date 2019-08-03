@@ -1,4 +1,4 @@
-package ru.job4j.threads;
+package ru.job4j.threads.monitor;
 
 import net.jcip.annotations.ThreadSafe;
 import org.checkerframework.checker.nullness.qual.NonNull;

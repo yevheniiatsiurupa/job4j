@@ -1,4 +1,4 @@
-package ru.job4j.threads;
+package ru.job4j.threads.download;
 
 import java.io.*;
 import java.net.HttpURLConnection;
