@@ -90,7 +90,7 @@ public class ThreadPool {
         pool.work(taskC);
         pool.work(taskD);
 
-        Thread.currentThread().sleep(10000);
+        Thread.sleep(10000);
         pool.shutdown();
     }
 }
