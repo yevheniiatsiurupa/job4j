@@ -17,6 +17,8 @@ public class ThreadElem extends Thread {
      */
     private SimpleBlockingQueue<Runnable> tasks;
 
+    private boolean isStopped = false;
+
     public ThreadElem(SimpleBlockingQueue<Runnable> tasks) {
         this.tasks = tasks;
     }
@@ -29,7 +31,7 @@ public class ThreadElem extends Thread {
      * Задание выполняется.
      */
     public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
+        while (!isStopped) {
             try {
                 Runnable task = tasks.poll();
                 task.run();
@@ -37,6 +39,10 @@ public class ThreadElem extends Thread {
                 Thread.currentThread().interrupt();
             }
         }
+    }
+
+    public void doStop() {
+        isStopped = true;
     }
 
 }

@@ -25,7 +25,7 @@ public class ThreadPool {
     /**
      * Поле хранит пул потоков.
      */
-    private final List<Thread> threads = new LinkedList<>();
+    private final List<ThreadElem> threads = new LinkedList<>();
 
     /**
      * Поле хранит блокирующую очередь заданий.
@@ -58,7 +58,7 @@ public class ThreadPool {
      * откуда оно потом будет запущено одним из свободных потоков из threads.
      * @param job выполняемое задание.
      */
-    public synchronized void work(Runnable job) throws Exception {
+    public void work(Runnable job) throws Exception {
         if (isStopped) {
             throw new IllegalStateException("Pool was stopped.");
         }
@@ -71,10 +71,10 @@ public class ThreadPool {
      * метод work для пула.
      * Все потоки из списка threads прерываются.
      */
-    public synchronized void shutdown() {
+    public void shutdown() {
         this.isStopped = true;
-        for (Thread tmp : threads) {
-            tmp.interrupt();
+        for (ThreadElem tmp : threads) {
+            tmp.doStop();
         }
     }
 
@@ -90,7 +90,6 @@ public class ThreadPool {
         pool.work(taskC);
         pool.work(taskD);
 
-        Thread.sleep(10000);
         pool.shutdown();
     }
 }
