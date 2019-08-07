@@ -1,22 +1,28 @@
 package ru.job4j.threads.bomberman;
 
-public class Player extends Thread {
+/**
+ * @version 1.0.
+ * @since 06/08/2019.
+ * @author Evgeniya Tsiurupa
+ */
+
+public class BomberMan extends Thread {
     /**
      * Поле хранит ссылку на игровое поле.
      */
-    private final Board board;
+    protected final Board board;
 
     /**
      * Поле хранит ссылку на текущую ячейку для игрока.
      */
-    private Cell currCell;
+    protected Cell currCell;
 
     /**
      * Поле хранит имя игрока.
      */
     private String name;
 
-    public Player(Board board, int rowStart, int colStart, String name) {
+    public BomberMan(Board board, int rowStart, int colStart, String name) {
         this.board = board;
         this.name = name;
         this.currCell = board.getCell(rowStart, colStart);
@@ -40,10 +46,13 @@ public class Player extends Thread {
                 Thread.sleep(1000);
                 boolean moved = false;
                 Cell dest = null;
-                while (!moved) {
-                    dest = this.board.getRandomDest(currCell);
+                while (!moved && !Thread.currentThread().isInterrupted()) {
+                    dest = this.getDestCell();
                     moved = this.board.move(this.currCell, dest);
                     Thread.sleep(500);
+                }
+                if (Thread.currentThread().isInterrupted()) {
+                    throw new InterruptedException();
                 }
                 this.currCell = dest;
                 System.out.println(String.format("Player %s moved to %s", this.name, this.currCell));
@@ -51,5 +60,13 @@ public class Player extends Thread {
                 Thread.currentThread().interrupt();
             }
         }
+    }
+
+    /**
+     * Метод для получения следующего хода.
+     * Должен быть объединен с пользовательским вводом.
+     */
+    public Cell getDestCell() {
+        return this.board.getRandomDest(currCell);
     }
 }

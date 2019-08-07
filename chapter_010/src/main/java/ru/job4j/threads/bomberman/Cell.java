@@ -2,7 +2,7 @@ package ru.job4j.threads.bomberman;
 
 /**
  * @version 1.0.
- * @since 04/08/2019.
+ * @since 06/08/2019.
  * @author Evgeniya Tsiurupa
  */
 
@@ -30,4 +30,6 @@ public class Cell {
                 + ", col=" + col
                 + '}';
     }
+
+
 }

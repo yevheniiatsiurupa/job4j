@@ -6,7 +6,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @version 1.0.
- * @since 04/08/2019.
+ * @since 06/08/2019.
  * @author Evgeniya Tsiurupa
  */
 
@@ -22,12 +22,24 @@ public class Board {
     private final Cell[][] cells;
 
     /**
+     * Поле хранит сложность игры (1, 2, 3).
+     */
+    private final int difficulty;
+
+    /**
+     * Поле хранит информаци, есть ли победитель уже.
+     */
+    private boolean noWinner = true;
+
+    /**
      * Конструктор.
      * Заполняет массивы board, cells объектами.
      * @param width ширина поля.
      * @param height высота поля.
+     * @param difficulty сложность поля (1, 2, 3).
      */
-    public Board(int width, int height) {
+    public Board(int width, int height, int difficulty) {
+        this.difficulty = difficulty;
         this.board = new ReentrantLock[width][height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -40,6 +52,14 @@ public class Board {
                 cells[i][j] = new Cell(i, j);
             }
         }
+    }
+
+    public boolean hasNoWinner() {
+        return noWinner;
+    }
+
+    public void setWinner() {
+        this.noWinner = false;
     }
 
     /**
@@ -84,7 +104,7 @@ public class Board {
      * Метод для получения списка соседних ячеек для текущей ячейки.
      * @param source текущая ячейка.
      */
-    private List<Cell> getNear(Cell source) {
+    public List<Cell> getNear(Cell source) {
         int row = source.getRow();
         int col = source.getCol();
         List<Cell> result = new ArrayList<>();
@@ -139,5 +159,74 @@ public class Board {
     public Cell getRandomDest(Cell source) {
         List<Cell> near = this.getNear(source);
         return  this.getRandom(near);
+    }
+
+    /**
+     * Метод для получения количества блоков в зависимости от сложности.
+     * @return возвращает количество блоков.
+     */
+    private int getBlockNumber() {
+        int totalCells = this.board.length * this.board[0].length;
+        int blockNumber = 0;
+        if (this.difficulty == 1) {
+            blockNumber = totalCells / 5;
+        } else if (this.difficulty == 2) {
+            blockNumber = totalCells / 4;
+        } else {
+            blockNumber = totalCells / 3;
+        }
+        return blockNumber;
+    }
+
+    /**
+     * Метод для получения списка радномных номеров ячеек.
+     * Количество ячеек =  количество блоков.
+     * @return возвращает список радномных номеров от 0 до кол-ва ячеек.
+     */
+    private List<Integer> getBlockList() {
+        int blockNumber = this.getBlockNumber();
+        int totalCells = this.board.length * this.board[0].length;
+        List<Integer> list = new ArrayList<>();
+        for (int i = 0; i < totalCells; i++) {
+            list.add(i);
+        }
+        List<Integer> sublist = new ArrayList<>();
+        for (int i = 0; i < blockNumber; i++) {
+            int randomNumb = (int) (Math.random() * (list.size()));
+            sublist.add(list.get(randomNumb));
+            list.remove(randomNumb);
+        }
+        return sublist;
+    }
+
+    /**
+     * Метод получает список радномных номеров ячеек, которые необходимо
+     * заблокировать, и блокирует их.
+     */
+    public void setBlocks() {
+        List<Integer> list = this.getBlockList();
+        int width = this.board[0].length;
+        for (Integer cellNumb : list) {
+            int row = cellNumb / width;
+            int col = cellNumb % width;
+            board[row][col].lock();
+            System.out.println(String.format("%d - %d locked", row, col));
+        }
+    }
+
+    /**
+     * Метод для получения случайной свободной ячейки на поле.
+     */
+    public Cell getRandomFree() {
+        boolean found = false;
+        int randRow = 0;
+        int randCol = 0;
+        while (!found) {
+            randRow = (int) (Math.random() * (this.board.length));
+            randCol = (int) (Math.random() * (this.board[0].length));
+            ReentrantLock destLock = board[randRow][randCol];
+            found = !destLock.isLocked();
+        }
+        return this.getCell(randRow, randCol);
     }
 }
