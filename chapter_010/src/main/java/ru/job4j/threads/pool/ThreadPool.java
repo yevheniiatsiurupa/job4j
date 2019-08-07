@@ -35,7 +35,7 @@ public class ThreadPool {
     /**
      * Поле хранит информацию остановлен ли пул потоков.
      */
-    private boolean isStopped = false;
+    private volatile boolean isStopped = false;
 
     /**
      * Конструктор.
@@ -74,7 +74,7 @@ public class ThreadPool {
     public void shutdown() {
         this.isStopped = true;
         for (ThreadElem tmp : threads) {
-            tmp.doStop();
+            tmp.interrupt();
         }
     }
 

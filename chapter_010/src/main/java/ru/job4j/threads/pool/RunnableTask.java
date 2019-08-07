@@ -24,7 +24,7 @@ public class RunnableTask implements Runnable {
             Thread.sleep(3000);
             System.out.println(String.format("End of %s in %s", this.taskName, Thread.currentThread().getName()));
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            Thread.currentThread().interrupt();
         }
     }
 }
