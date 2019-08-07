@@ -52,11 +52,26 @@ public class Downloader implements Runnable {
             HttpURLConnection connection = (HttpURLConnection) ur.openConnection();
             BufferedInputStream bis = new BufferedInputStream(connection.getInputStream());
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(this.target));
-            int c = bis.read();
+            long read = 0;
+            long prevTime = System.currentTimeMillis();
+            byte[] buffer = new byte[4096];
+            int c = bis.read(buffer);
             while (c != -1) {
-                bos.write(c);
-                c = bis.read();
+                read += c;
+                bos.write(buffer, 0, c);
+                c = bis.read(buffer);
+                if (read > speed * 1000) {
+                    System.out.println(String.format("Downloaded for %d millisecond: %d",
+                            (System.currentTimeMillis() - prevTime), read / 1000));
+                    if ((System.currentTimeMillis() - prevTime) < 1000L) {
+                        Thread.sleep(1000L - (System.currentTimeMillis() - prevTime));
+                        System.out.println("пауза");
+                    }
+                    read = 0;
+                    prevTime = System.currentTimeMillis();
+                }
             }
+            System.out.println("File was downloaded.");
             bis.close();
             bos.close();
         } catch (Exception e) {
@@ -65,31 +80,11 @@ public class Downloader implements Runnable {
     }
 
     public static void main(String[] args) throws Exception {
-        String url = "https://www.oracle.com/technetwork/java/javase/memorymanagement-whitepaper-150215.pdf";
+        String url = "https://courses.cs.ut.ee/MTAT.03.279/2016_fall/uploads/Main/jmm-lecture-v3.pdf";
         long speed = 200;
         File target = new File("chapter_010/src/main/resources/abc.pdf");
         target.createNewFile();
         Downloader first = new Downloader(url, speed, target);
-
-        Thread t = new Thread(first);
-        t.start();
-        long prevSize = 0;
-
-        while (t.isAlive()) {
-            try {
-                Thread.sleep(1000);
-                long size = target.length();
-                long diff = size - prevSize;
-                System.out.println("Downloaded for 1 second: " + diff / 1000);
-                if (diff > speed * 1000) {
-                    long pause = diff / (speed * 1000);
-                    t.sleep(pause * 1000);
-                    System.out.println("пауза");
-                }
-                prevSize = size;
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }
+        new Thread(first).start();
     }
 }
