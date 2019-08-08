@@ -2,6 +2,7 @@ package ru.job4j.threads.bomberman;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -80,10 +81,10 @@ public class Board {
      * @param dest целевая ячейка.
      * @return возвращает результат произошло ли движение.
      */
-    public boolean move(Cell source, Cell dest) {
+    public boolean move(Cell source, Cell dest) throws InterruptedException {
         ReentrantLock sourceLock = board[source.getRow()][source.getCol()];
         ReentrantLock destLock = board[dest.getRow()][dest.getCol()];
-        boolean attempt = destLock.tryLock();
+        boolean attempt = destLock.tryLock(1000, TimeUnit.MILLISECONDS);
         if (attempt) {
             sourceLock.unlock();
         }
@@ -228,5 +229,17 @@ public class Board {
             found = !destLock.isLocked();
         }
         return this.getCell(randRow, randCol);
+    }
+
+    /**
+     * Метод проверяет есть ли потоки, которые ожидают захвата текущей клетки.
+     * @param source ячейка поля для проверки.
+     * @return возвращает true, если есть поток, ожидающий освобождения клетки.
+     */
+    public boolean checkLock(Cell source) {
+        int row = source.getRow();
+        int col = source.getCol();
+        ReentrantLock lock = this.board[row][col];
+        return lock.hasQueuedThreads();
     }
 }

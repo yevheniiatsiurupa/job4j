@@ -31,6 +31,10 @@ public class BomberMan extends Thread {
     /**
      * Основной метод движения игрока.
      * Игрок занимает стартовую ячейку.
+     * В начале цикла движения проверяется нет ли потоков, которые пытаются занять
+     * ячейку бомбермена (которые ожидают методом tryLock).
+     * Если есть, то значит, что бомбермена съели и можно прекращать игру.
+     * Если нет, то игрок пытается походить на другую клетку.
      * Пока поток не прерван, то с интервалом в 1 секунду
      * игрок перемещается по полю.
      * Игрок пытается занять ячейку с помощью метода move.
@@ -46,16 +50,21 @@ public class BomberMan extends Thread {
                 Thread.sleep(1000);
                 boolean moved = false;
                 Cell dest = null;
-                while (!moved && !Thread.currentThread().isInterrupted()) {
+                while (!moved) {
+                    if (this.board.checkLock(this.currCell)) {
+                        System.out.println("Monster ate you! You lost.");
+                        break;
+                    }
                     dest = this.getDestCell();
                     moved = this.board.move(this.currCell, dest);
                     Thread.sleep(500);
                 }
-                if (Thread.currentThread().isInterrupted()) {
-                    throw new InterruptedException();
+                if (moved) {
+                    this.currCell = dest;
+                    System.out.println(String.format("Player %s moved to %s", this.name, this.currCell));
+                } else {
+                    break;
                 }
-                this.currCell = dest;
-                System.out.println(String.format("Player %s moved to %s", this.name, this.currCell));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
