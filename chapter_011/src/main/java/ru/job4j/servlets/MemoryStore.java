@@ -59,6 +59,7 @@ public class MemoryStore implements Store {
      */
     @Override
     public void update(User user, int id) {
+        user.setId(id);
         this.users.put(id, user);
     }
 
