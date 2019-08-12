@@ -14,7 +14,7 @@ public class ValidateService implements Validate {
     /**
      * Ссылка на объект MemoryStore, в котором находится хранилище пользователей.
      */
-    private final Store logic = MemoryStore.getInstance();
+    private final Store logic = DbStore.getInstance();
 
     private ValidateService() {
     }

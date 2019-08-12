@@ -17,6 +17,14 @@ public class User {
         this.name = name;
     }
 
+    public User(int id, String name, String login, String email, long createDate) {
+        this.id = id;
+        this.name = name;
+        this.login = login;
+        this.email = email;
+        this.createDate = createDate;
+    }
+
     public User(String name, String login, String email, long createDate) {
         this.name = name;
         this.login = login;
