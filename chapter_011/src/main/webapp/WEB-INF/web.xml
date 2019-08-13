@@ -6,7 +6,7 @@
          version="2.4">
     <servlet>
         <servlet-name>EchoServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.EchoServlet</servlet-class>
+        <servlet-class>ru.job4j.servlets.servlet.EchoServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>EchoServlet</servlet-name>
@@ -15,7 +15,7 @@
 
     <servlet>
         <servlet-name>UserServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserServlet</servlet-class>
+        <servlet-class>ru.job4j.servlets.servlet.UserServlet</servlet-class>
         <load-on-startup>0</load-on-startup>
     </servlet>
     <servlet-mapping>
@@ -25,7 +25,7 @@
 
     <servlet>
         <servlet-name>UsersServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UsersServlet</servlet-class>
+        <servlet-class>ru.job4j.servlets.servlet.UsersServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UsersServlet</servlet-name>
@@ -34,7 +34,7 @@
 
     <servlet>
         <servlet-name>UserCreateServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserCreateServlet</servlet-class>
+        <servlet-class>ru.job4j.servlets.servlet.UserCreateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserCreateServlet</servlet-name>
@@ -43,7 +43,7 @@
 
     <servlet>
         <servlet-name>UserUpdateServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserUpdateServlet</servlet-class>
+        <servlet-class>ru.job4j.servlets.servlet.UserUpdateServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserUpdateServlet</servlet-name>
@@ -52,7 +52,7 @@
 
     <servlet>
         <servlet-name>UserDeleteServlet</servlet-name>
-        <servlet-class>ru.job4j.servlets.UserDeleteServlet</servlet-class>
+        <servlet-class>ru.job4j.servlets.servlet.UserDeleteServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>UserDeleteServlet</servlet-name>

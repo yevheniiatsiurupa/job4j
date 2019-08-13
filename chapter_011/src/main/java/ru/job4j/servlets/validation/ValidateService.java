@@ -1,4 +1,9 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.validation;
+
+import ru.job4j.servlets.User;
+import ru.job4j.servlets.storage.DbStore;
+import ru.job4j.servlets.storage.MemoryStore;
+import ru.job4j.servlets.storage.Store;
 
 import java.util.Collection;
 
@@ -46,10 +51,11 @@ public class ValidateService implements Validate {
      */
     @Override
     public void update(User user, int id) throws UserValidationException {
-        if (this.logic.findById(id) == null) {
+        boolean result = this.logic.update(user, id);
+        if (!result) {
             throw new UserValidationException("User is not found.");
         }
-        this.logic.update(user, id);
+
     }
 
     /**
@@ -60,10 +66,10 @@ public class ValidateService implements Validate {
      */
     @Override
     public void delete(int id) throws UserValidationException {
-        if (this.logic.findById(id) == null) {
+        boolean result = this.logic.delete(id);
+        if (!result) {
             throw new UserValidationException("User is not found.");
         }
-        this.logic.delete(id);
     }
 
     /**

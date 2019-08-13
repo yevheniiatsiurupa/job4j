@@ -1,4 +1,8 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.servlet;
+
+import ru.job4j.servlets.User;
+import ru.job4j.servlets.validation.UserValidationException;
+import ru.job4j.servlets.validation.ValidateService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +30,7 @@ public class UserUpdateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        req.getRequestDispatcher("/update.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/update.jsp").forward(req, resp);
     }
 
     /**
@@ -37,7 +41,32 @@ public class UserUpdateServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String answer = this.update(req, resp);
+        req.setAttribute("answer", answer);
         resp.setContentType("text/html");
-        req.getRequestDispatcher("/updatePost.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/updatePost.jsp").forward(req, resp);
+    }
+
+    /**
+     * Метод для удаления пользователя.
+     * Считывает передаваемый параметр id, name.
+     * Редактирует пользователя по номеру (через валидатор).
+     * Возвращает результат операции.
+     */
+    private String update(HttpServletRequest req, HttpServletResponse resp) {
+        int id = Integer.parseInt(req.getParameter("id"));
+        String name = req.getParameter("name");
+        String login = req.getParameter("login");
+        String email = req.getParameter("email");
+        long createTime = System.currentTimeMillis();
+        String response;
+        User user = new User(name, login, email, createTime);
+        try {
+            ValidateService.getInstance().update(user, id);
+            response = "User was successfully updated.";
+        } catch (UserValidationException e) {
+            response = e.getMessage();
+        }
+        return response;
     }
 }

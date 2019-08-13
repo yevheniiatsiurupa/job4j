@@ -1,4 +1,6 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.validation;
+
+import ru.job4j.servlets.User;
 
 import java.util.Collection;
 

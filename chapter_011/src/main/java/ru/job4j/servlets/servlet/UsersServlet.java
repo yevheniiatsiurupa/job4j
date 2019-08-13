@@ -1,4 +1,4 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -27,6 +27,6 @@ public class UsersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        resp.sendRedirect(req.getContextPath() + "/list.jsp");
+        req.getRequestDispatcher("/WEB-INF/views/list.jsp").forward(req, resp);
     }
 }

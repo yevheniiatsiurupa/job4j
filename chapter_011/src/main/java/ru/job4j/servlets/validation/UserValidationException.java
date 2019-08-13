@@ -1,4 +1,4 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.validation;
 
 /**
  * @version 1.0.

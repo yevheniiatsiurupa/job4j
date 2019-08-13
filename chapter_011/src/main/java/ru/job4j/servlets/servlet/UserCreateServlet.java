@@ -1,4 +1,8 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.servlet;
+
+import ru.job4j.servlets.User;
+import ru.job4j.servlets.validation.UserValidationException;
+import ru.job4j.servlets.validation.ValidateService;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +28,7 @@ public class UserCreateServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        req.getRequestDispatcher("/create.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/create.jsp").forward(req, resp);
     }
 
     /**
@@ -35,7 +39,31 @@ public class UserCreateServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String answer = this.create(req, resp);
+        req.setAttribute("answer", answer);
         resp.setContentType("text/html");
-        req.getRequestDispatcher("/createPost.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/createPost.jsp").forward(req, resp);
+    }
+
+    /**
+     * Метод для добавления пользователя.
+     * Считывает передаваемый параметр name.
+     * Добавляет пользователя, присваивает ему номер id (через валидатор).
+     * Возвращает результат операции.
+     */
+    private String create(HttpServletRequest req, HttpServletResponse resp) {
+        String name = req.getParameter("name");
+        String login = req.getParameter("login");
+        String email = req.getParameter("email");
+        long createTime = System.currentTimeMillis();
+        String response;
+        User user = new User(name, login, email, createTime);
+        try {
+            ValidateService.getInstance().add(user);
+            response = "User was added.";
+        } catch (UserValidationException e) {
+            response = e.getMessage();
+        }
+        return response;
     }
 }

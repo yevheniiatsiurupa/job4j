@@ -1,4 +1,6 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.storage;
+
+import ru.job4j.servlets.User;
 
 import java.util.Collection;
 import java.util.Map;
@@ -48,8 +50,13 @@ public class MemoryStore implements Store {
      * @param id номер пользователя.
      */
     @Override
-    public void delete(int id) {
-        this.users.remove(id, this.findById(id));
+    public boolean delete(int id) {
+        if (this.findById(id) == null) {
+            return false;
+        } else {
+            this.users.remove(id, this.findById(id));
+            return true;
+        }
     }
 
     /**
@@ -58,9 +65,14 @@ public class MemoryStore implements Store {
      * @param id номер редактируемого пользователя.
      */
     @Override
-    public void update(User user, int id) {
-        user.setId(id);
-        this.users.put(id, user);
+    public boolean update(User user, int id) {
+        if (this.findById(id) == null) {
+            return false;
+        } else {
+            user.setId(id);
+            this.users.put(id, user);
+            return true;
+        }
     }
 
     /**
