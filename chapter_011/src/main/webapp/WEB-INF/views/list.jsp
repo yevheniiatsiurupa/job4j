@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="ru.job4j.servlets.User" %>
 <%@ page import="ru.job4j.servlets.validation.ValidateService" %>
 <%@ page import="java.util.Collection" %>
@@ -20,35 +21,35 @@
         <th>Update</th>
         <th>Delete</th>
     </tr>
-    <% try {
-        Collection<User> users = ValidateService.getInstance().findAll();
-        for (User tmp : users) { %>
-    <tr>
-        <td align="right" valign="top"><%=tmp.getName()%> </td>
-        <td align="right" valign="top"><%=tmp.getLogin()%> </td>
-        <td align="right" valign="top"><%=tmp.getEmail()%> </td>
-        <td align="left" valign="center">
-            <form action="${pageContext.request.contextPath}/edit" method="get">
-                <input type="hidden" name="id" value="<%=tmp.getId()%>" />
-                <input type="hidden" name="name" value="<%=tmp.getName()%>" />
-                <input type="hidden" name="login" value="<%=tmp.getLogin()%>" />
-                <input type="hidden" name="email" value="<%=tmp.getEmail()%>" />
-                <input type="submit" value="update" />
-            </form>
-        </td>
-        <td align="right" valign="center">
-            <form action="${pageContext.request.contextPath}/delete" method="get">
-                <input type="hidden" name="id" value="<%=tmp.getId()%>" />
-                <input type="submit" value="delete" />
-            </form>
-        </td>
-    </tr>
-    <% }
-    } catch (UserValidationException e) {%>
-    <tr>
-        <td><%=e.getMessage()%></td>
-    </tr>
-    <% } %>
+    <c:if test="${requestScope.answer=='ok'}">
+        <c:forEach items="${requestScope.users}" var="user">
+            <tr>
+                <td align="right" valign="top"><c:out value="${user.name}"/> </td>
+                <td align="right" valign="top"><c:out value="${user.login}"/> </td>
+                <td align="right" valign="top"><c:out value="${user.email}"/> </td>
+                <td align="left" valign="center">
+                    <form action="${pageContext.request.contextPath}/edit" method="get">
+                        <input type="hidden" name="id" value="<c:out value="${user.id}"/>" />
+                        <input type="hidden" name="name" value="<c:out value="${user.name}"/>" />
+                        <input type="hidden" name="login" value="<c:out value="${user.login}"/>" />
+                        <input type="hidden" name="email" value="<c:out value="${user.email}"/>" />
+                        <input type="submit" value="update" />
+                    </form>
+                </td>
+                <td align="right" valign="center">
+                    <form action="${pageContext.request.contextPath}/delete" method="get">
+                        <input type="hidden" name="id" value="<c:out value="${user.id}"/>" />
+                        <input type="submit" value="delete" />
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </c:if>
+    <c:if test="${requestScope.answer!='ok'}">
+        <tr>
+            <td><c:out value="${requestScope.answer}"/></td>
+        </tr>
+    </c:if>
 </table>
 </body>
 </html>
