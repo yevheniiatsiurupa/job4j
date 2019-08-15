@@ -13,7 +13,6 @@ import java.util.Collection;
  */
 
 public class ValidateService implements Validate {
-    private static final ValidateService INSTANCE = new ValidateService();
 
     /**
      * Ссылка на объект MemoryStore, в котором находится хранилище пользователей.
@@ -23,8 +22,8 @@ public class ValidateService implements Validate {
     private ValidateService() {
     }
 
-    public static ValidateService getInstance() {
-        return INSTANCE;
+    public static Validate getInstance() {
+        return Holder.INSTANCE;
     }
 
     /**
@@ -110,5 +109,9 @@ public class ValidateService implements Validate {
             throw new UserValidationException("User is not found.");
         }
         return this.logic.findByLogin(login);
+    }
+
+    private static final class Holder{
+        private static final ValidateService INSTANCE = new ValidateService();
     }
 }
