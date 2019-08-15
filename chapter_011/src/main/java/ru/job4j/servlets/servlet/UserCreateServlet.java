@@ -1,6 +1,7 @@
 package ru.job4j.servlets.servlet;
 
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.Role;
+import ru.job4j.servlets.models.User;
 import ru.job4j.servlets.validation.UserValidationException;
 import ru.job4j.servlets.validation.ValidateService;
 
@@ -55,9 +56,11 @@ public class UserCreateServlet extends HttpServlet {
         String name = req.getParameter("name");
         String login = req.getParameter("login");
         String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        Role role = new Role(req.getParameter("role"));
         long createTime = System.currentTimeMillis();
         String response;
-        User user = new User(name, login, email, createTime);
+        User user = new User(name, login, email, password, createTime, role);
         try {
             ValidateService.getInstance().add(user);
             response = "User was added.";

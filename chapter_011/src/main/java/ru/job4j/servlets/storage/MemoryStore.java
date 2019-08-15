@@ -1,9 +1,10 @@
 package ru.job4j.servlets.storage;
 
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.User;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -91,5 +92,21 @@ public class MemoryStore implements Store {
     @Override
     public Collection<User> findAll() {
         return this.users.values();
+    }
+
+    /**
+     * Метод возвращает пользователя по логину.
+     * @param login логин для поиска пользователя.
+     * @return возвращает пользователя.
+     */
+    public User findByLogin(String login) {
+        Collection<User> userSet = this.users.values();
+        User result = null;
+        for (User tmp : userSet) {
+            if (login.equals(tmp.getLogin())) {
+                result = tmp;
+            }
+        }
+        return result;
     }
 }

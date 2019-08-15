@@ -1,8 +1,4 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="ru.job4j.servlets.User" %>
-<%@ page import="ru.job4j.servlets.validation.ValidateService" %>
-<%@ page import="java.util.Collection" %>
-<%@ page import="ru.job4j.servlets.validation.UserValidationException" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -18,6 +14,7 @@
         <th>Name</th>
         <th>Login</th>
         <th>Email</th>
+        <th>Role</th>
         <th>Update</th>
         <th>Delete</th>
     </tr>
@@ -27,12 +24,14 @@
                 <td align="right" valign="top"><c:out value="${user.name}"/> </td>
                 <td align="right" valign="top"><c:out value="${user.login}"/> </td>
                 <td align="right" valign="top"><c:out value="${user.email}"/> </td>
+                <td align="right" valign="top"><c:out value="${user.role}"/> </td>
                 <td align="left" valign="center">
                     <form action="${pageContext.request.contextPath}/edit" method="get">
                         <input type="hidden" name="id" value="<c:out value="${user.id}"/>" />
                         <input type="hidden" name="name" value="<c:out value="${user.name}"/>" />
                         <input type="hidden" name="login" value="<c:out value="${user.login}"/>" />
                         <input type="hidden" name="email" value="<c:out value="${user.email}"/>" />
+                        <input type="hidden" name="role" value="<c:out value="${user.role}"/>" />
                         <input type="submit" value="update" />
                     </form>
                 </td>
@@ -51,5 +50,9 @@
         </tr>
     </c:if>
 </table>
+<br/> <br/>
+<form action="${pageContext.request.contextPath}/logout" method="get">
+    <input type="submit" value="Log out" />
+</form>
 </body>
 </html>

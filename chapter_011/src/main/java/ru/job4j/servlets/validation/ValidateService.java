@@ -1,8 +1,7 @@
 package ru.job4j.servlets.validation;
 
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.User;
 import ru.job4j.servlets.storage.DbStore;
-import ru.job4j.servlets.storage.MemoryStore;
 import ru.job4j.servlets.storage.Store;
 
 import java.util.Collection;
@@ -98,5 +97,18 @@ public class ValidateService implements Validate {
             throw new UserValidationException("User is not found.");
         }
         return this.logic.findById(id);
+    }
+
+    /**
+     * Метод возвращает пользователя по логину.
+     * Перед операцией выполняется проверка.
+     * Если данные не проходят проверку - выбрасывается исключение.
+     */
+    @Override
+    public User findByLogin(String login) throws UserValidationException {
+        if (this.logic.findByLogin(login) == null) {
+            throw new UserValidationException("User is not found.");
+        }
+        return this.logic.findByLogin(login);
     }
 }

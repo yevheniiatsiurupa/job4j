@@ -1,6 +1,6 @@
 package ru.job4j.servlets.validation;
 
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.User;
 
 import java.util.Collection;
 
@@ -16,4 +16,5 @@ public interface Validate {
     void delete(int id) throws UserValidationException;
     Collection<User> findAll() throws UserValidationException;
     User findById(int id) throws UserValidationException;
+    User findByLogin(String login) throws UserValidationException;
 }

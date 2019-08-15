@@ -1,6 +1,6 @@
 package ru.job4j.servlets.servlet;
 
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.User;
 import ru.job4j.servlets.validation.UserValidationException;
 import ru.job4j.servlets.validation.Validate;
 import ru.job4j.servlets.validation.ValidateService;

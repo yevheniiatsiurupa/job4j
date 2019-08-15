@@ -1,7 +1,8 @@
 package ru.job4j.servlets.storage;
 
 import org.apache.commons.dbcp2.BasicDataSource;
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.Role;
+import ru.job4j.servlets.models.User;
 
 import java.io.InputStream;
 import java.sql.*;
@@ -36,6 +37,9 @@ public class DbStore implements Store {
             SOURCE.setMaxIdle(10);
             SOURCE.setMaxOpenPreparedStatements(100);
             this.createTable();
+            this.add(new User(
+                    "Name1", "admin1", "email1",
+                    "adminpass", System.currentTimeMillis(), new Role("admin")));
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -59,6 +63,8 @@ public class DbStore implements Store {
                     + "name varchar(100),"
                     + "login varchar(100) unique,"
                     + "email varchar(100) unique,"
+                    + "password varchar(100),"
+                    + "role varchar(100),"
                     + "time_of_creation bigint);");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,12 +81,16 @@ public class DbStore implements Store {
     public void add(User user) {
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
-                "insert into users_data (name, login, email, time_of_creation) values (?, ?, ?, ?);"
+                "insert into users_data "
+                        + "(name, login, email, password, role, time_of_creation) "
+                        + "values (?, ?, ?, ?, ?, ?);"
         )) {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
             st.setString(3, user.getEmail());
-            st.setLong(4, user.getCreateDate());
+            st.setString(4, user.getPassword());
+            st.setString(5, user.getRole().getName());
+            st.setLong(6, user.getCreateDate());
             st.executeUpdate();
 
         } catch (Exception e) {
@@ -96,13 +106,17 @@ public class DbStore implements Store {
         boolean result = false;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
-                "update users_data set name = ?, login = ?, email = ?, time_of_creation = ? where id = ?;"
+                "update users_data set name = ?, login = ?, email = ?, "
+                        + "password = ?, role = ?, time_of_creation = ? "
+                        + "where id = ?;"
         )) {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
             st.setString(3, user.getEmail());
-            st.setLong(4, user.getCreateDate());
-            st.setInt(5, id);
+            st.setString(4, user.getPassword());
+            st.setString(5, user.getRole().getName());
+            st.setLong(6, user.getCreateDate());
+            st.setInt(7, id);
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -139,9 +153,11 @@ public class DbStore implements Store {
                 String name = rs.getString("name");
                 String login = rs.getString("login");
                 String email = rs.getString("email");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
                 long time = rs.getLong("time_of_creation");
                 int id = rs.getInt("id");
-                result.add(new User(id, name, login, email, time));
+                result.add(new User(id, name, login, email, password, time, new Role(role)));
             }
 
         } catch (Exception e) {
@@ -163,9 +179,36 @@ public class DbStore implements Store {
                 String name = rs.getString("name");
                 String login = rs.getString("login");
                 String email = rs.getString("email");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
                 long time = rs.getLong("time_of_creation");
                 int idRes = rs.getInt("id");
-                result = new User(idRes, name, login, email, time);
+                result = new User(idRes, name, login, email, password, time, new Role(role));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    @Override
+    public User findByLogin(String login) {
+        User result = null;
+        try (Connection connection = SOURCE.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                     "select * from users_data where login = ?;"
+             )) {
+            st.setString(1, login);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                String role = rs.getString("role");
+                long time = rs.getLong("time_of_creation");
+                int idRes = rs.getInt("id");
+                result = new User(idRes, name, login, email, password, time, new Role(role));
             }
 
         } catch (Exception e) {

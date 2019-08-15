@@ -6,7 +6,7 @@
 <body>
 <form action="${pageContext.request.contextPath}/list" method="get">
     ${requestScope.answer} <br/>
-    <input type="submit" value="Return to users list" />
+    <input type="submit" value="Return to start page" />
 </form>
 </body>
 </html>

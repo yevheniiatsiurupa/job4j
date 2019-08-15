@@ -1,6 +1,6 @@
 package ru.job4j.servlets.storage;
 
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.User;
 
 import java.util.Collection;
 
@@ -16,4 +16,5 @@ public interface Store {
     boolean delete(int id);
     Collection<User> findAll();
     User findById(int id);
+    User findByLogin(String login);
 }

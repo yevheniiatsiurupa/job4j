@@ -1,4 +1,4 @@
-package ru.job4j.servlets;
+package ru.job4j.servlets.models;
 
 import java.util.Objects;
 
@@ -13,25 +13,31 @@ public class User {
     private String name;
     private String login;
     private String email;
+    private String password;
     private long createDate;
+    private Role role;
 
     public User(String name) {
         this.name = name;
     }
 
-    public User(int id, String name, String login, String email, long createDate) {
+    public User(int id, String name, String login, String email, String password, long createDate, Role role) {
         this.id = id;
         this.name = name;
         this.login = login;
+        this.password = password;
         this.email = email;
         this.createDate = createDate;
+        this.role = role;
     }
 
-    public User(String name, String login, String email, long createDate) {
+    public User(String name, String login, String email, String password, long createDate, Role role) {
         this.name = name;
         this.login = login;
+        this.password = password;
         this.email = email;
         this.createDate = createDate;
+        this.role = role;
     }
 
     public int getId() {
@@ -52,6 +58,18 @@ public class User {
 
     public long getCreateDate() {
         return createDate;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public void setId(int id) {

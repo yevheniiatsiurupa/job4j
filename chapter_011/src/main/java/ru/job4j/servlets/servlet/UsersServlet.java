@@ -1,6 +1,6 @@
 package ru.job4j.servlets.servlet;
 
-import ru.job4j.servlets.User;
+import ru.job4j.servlets.models.User;
 import ru.job4j.servlets.validation.UserValidationException;
 import ru.job4j.servlets.validation.ValidateService;
 
@@ -25,9 +25,7 @@ public class UsersServlet extends HttpServlet {
      * кнопка "Create new user" - отправляет запрос get сервлету UserCreateServlet,
      * таблица с пользователями, возле каждого по 2 кнопки,
      * кнопка "update" отправляет запрос get сервлету UserUpdateServlet
-     * (передаваемые параметры: id, name)
      * кнопка "delete" отправляет запрос get сервлету UserDeleteServlet
-     * (передаваемые параметры: id).
      */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
