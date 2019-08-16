@@ -6,6 +6,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Класс используется в тестах вместо ValidateService.
+ * @version 1.0.
+ * @since 16/08/2019.
+ * @author Evgeniya Tsiurupa
+ */
 public class ValidateStub implements Validate {
     private final Map<Integer, User> store = new HashMap<>();
     private int ids = 0;
@@ -18,12 +24,13 @@ public class ValidateStub implements Validate {
 
     @Override
     public void update(User user, int id) throws UserValidationException {
-
+        user.setId(id);
+        this.store.put(id, user);
     }
 
     @Override
     public void delete(int id) throws UserValidationException {
-
+        this.store.remove(id, this.findById(id));
     }
 
     @Override
@@ -33,7 +40,7 @@ public class ValidateStub implements Validate {
 
     @Override
     public User findById(int id) throws UserValidationException {
-        return null;
+        return this.store.get(id);
     }
 
     @Override

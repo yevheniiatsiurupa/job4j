@@ -111,7 +111,7 @@ public class ValidateService implements Validate {
         return this.logic.findByLogin(login);
     }
 
-    private static final class Holder{
+    private static final class Holder {
         private static final ValidateService INSTANCE = new ValidateService();
     }
 }
