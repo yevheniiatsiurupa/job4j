@@ -24,9 +24,11 @@ public class EmailProducerTest {
         list.add(new User("user 3", "email-3"));
 
         EmailProducer emailProducer = new EmailProducer(list, 5000L);
-        emailProducer.start();
-        Thread.sleep(8000);
-        emailProducer.interrupt();
-        assertThat(emailProducer.isInterrupted(), is(true));
+        emailProducer.sendEmails("Important message 1.");
+        Thread.sleep(emailProducer.getRandInterval());
+        emailProducer.sendEmails("Important message 2.");
+        emailProducer.shutProducer();
+
+        assertThat(emailProducer.getCountEmailsSent(), is(6));
     }
 }

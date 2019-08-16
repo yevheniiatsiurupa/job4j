@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EmailProducer  extends Thread {
+public class EmailProducer {
     private ExecutorService executor;
     private List<User> users;
     private long randInterval;
+    private int countEmailsSent = 0;
 
     public EmailProducer(List<User> users, long randInterval) {
         this.executor = Executors.newFixedThreadPool(
@@ -19,29 +20,23 @@ public class EmailProducer  extends Thread {
         this.randInterval = randInterval;
     }
 
-    @Override
-    public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            for (User tmp : users) {
-                Runnable task = new Runnable() {
-                    @Override
-                    public void run() {
-                        this.send();
-                    }
+    public long getRandInterval() {
+        return randInterval;
+    }
 
-                    public void send() {
-                        System.out.println(String.format("Sent message: user - %s, email - %s.",
-                                tmp.getUsername(), tmp.getEmail()));
-                    }
-                };
-                this.executor.submit(task);
-            }
-            try {
-                Thread.sleep(randInterval);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+    public int getCountEmailsSent() {
+        return countEmailsSent;
+    }
+
+    public void sendEmails(String message) {
+        for (User tmp : users) {
+            Runnable task = new EmailTask(tmp, message);
+            this.executor.submit(task);
+            this.countEmailsSent++;
         }
-        executor.shutdown();
+    }
+
+    public void shutProducer() {
+        this.executor.shutdown();
     }
 }

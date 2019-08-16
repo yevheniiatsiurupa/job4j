@@ -1,9 +1,9 @@
 package ru.job4j.exam;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -15,6 +15,28 @@ import java.util.concurrent.Executors;
  */
 
 public class SearchText {
+
+    public List<File> getFiles(String source) {
+        File target = new File(source);
+        List<File> result = new ArrayList<>();
+        Queue<File> queue = new LinkedList<>();
+        queue.offer(target);
+        while (!queue.isEmpty()) {
+            File tmp = queue.poll();
+            if (tmp.isDirectory()) {
+                File[] files = tmp.listFiles();
+                if (files != null) {
+                    for (File f : files) {
+                        queue.offer(f);
+                    }
+                }
+            } else {
+                result.add(tmp);
+            }
+        }
+        return result;
+    }
+
     /**
      * Метод для поиска заданного текста в файловой системе.
      * Создается пул потоков по количеству свободных процессоров.
@@ -29,46 +51,13 @@ public class SearchText {
         ExecutorService executor = Executors.newFixedThreadPool(
                 Runtime.getRuntime().availableProcessors()
         );
-
         String forSearch = "Search text";
         String path = "chapter_010/src/main/resources";
-
-        File target = new File(path);
-        Queue<File> queue = new LinkedList<>();
-        queue.offer(target);
-        while (!queue.isEmpty()) {
-            File tmp = queue.poll();
-            if (tmp.isDirectory()) {
-                File[] files = tmp.listFiles();
-                if (files != null) {
-                    for (File f : files) {
-                        queue.offer(f);
-                    }
-                }
-            } else {
-                String name = tmp.getName();
-                if (name.endsWith(".txt")) {
-                    Runnable task = new Runnable() {
-                        @Override
-                        public void run() {
-                            try (BufferedReader br = new BufferedReader(new FileReader(tmp))) {
-                                StringBuilder sb = new StringBuilder();
-                                while (br.ready()) {
-                                    sb.append(br.readLine());
-                                    sb.append(System.lineSeparator());
-                                }
-                                String result = sb.toString();
-                                boolean found = result.contains(forSearch);
-                                if (found) {
-                                    System.out.println("Text found in File: " + tmp.getName());
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    };
-                    executor.submit(task);
-                }
+        List<File> files = new SearchText().getFiles(path);
+        for (File tmp : files) {
+            String name = tmp.getName();
+            if (name.endsWith(".txt")) {
+                executor.submit(new SearchTask(tmp, forSearch));
             }
         }
         executor.shutdown();
