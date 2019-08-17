@@ -10,15 +10,23 @@
     <script>
         function validate() {
             if ($('#name').val() == '') {
-                alert('Name is ' + $('name').attr('title'));
+                alert($('#name').attr('placeholder'));
             }
             if ($('#surname').val() == '') {
-                alert('Surname is ' + $('surname').attr('placeholder'));
+                alert($('#surname').attr('placeholder'));
             }
             if ($('#desc').val() == '') {
-                alert('Description is ' + $('desc').attr('placeholder'));
+                alert($('#desc').attr('placeholder'));
             }
             return false;
+        }
+    </script>
+    <script>
+        function addRow() {
+            var name = $('#name').val();
+            var surname = $('#surname').val();
+            var desc = $('#desc').val();
+            $('#table tr:last').after('<tr><td>' + name +'</td><td>' + surname +'</td><td>' + desc +'</td></tr>')
         }
     </script>
 </head>
@@ -37,7 +45,7 @@
         <div class="form-group">
             <label class="control-label col-sm-1" for="surname">Surname:</label>
             <div class="col-sm-6">
-                <input type="password" class="form-control" id="surname" placeholder="Enter surname">
+                <input type="text" class="form-control" id="surname" placeholder="Enter surname">
             </div>
         </div>
         <div class="form-group">
@@ -61,26 +69,32 @@
                 <button type="submit" class="btn btn-default" onclick="return validate()">Submit</button>
             </div>
         </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-1 col-sm-10">
+                <button type="button" class="btn btn-default" onclick="return addRow()">Add row</button>
+            </div>
+        </div>
     </form>
     <div class="col-sm-7">
-        <table class="table">
+        <table class="table" id="table">
             <thead>
             <tr>
                 <th>Name</th>
                 <th>Surname</th>
-                <th>Sex</th>
+                <th>Description</th>
             </tr>
             </thead>
             <tbody>
             <tr>
                 <td>John</td>
                 <td>Doe</td>
-                <td>male</td>
+                <td>desc1</td>
             </tr>
             <tr>
                 <td>Mary</td>
                 <td>Moe</td>
-                <td>female</td>
+                <td>desc2</td>
             </tr>
             </tbody>
         </table>
