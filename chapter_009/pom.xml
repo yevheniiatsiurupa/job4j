@@ -10,6 +10,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>chapter_009</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>chapter_021</module>
+    </modules>
 
 
 </project>
