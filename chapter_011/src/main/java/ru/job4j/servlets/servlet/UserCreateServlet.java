@@ -57,10 +57,14 @@ public class UserCreateServlet extends HttpServlet {
         String login = req.getParameter("login");
         String email = req.getParameter("email");
         String password = req.getParameter("password");
+        String city = req.getParameter("city");
+        String country = req.getParameter("country");
         Role role = new Role(req.getParameter("role"));
         long createTime = System.currentTimeMillis();
         String response;
         User user = new User(name, login, email, password, createTime, role);
+        user.setCity(city);
+        user.setCountry(country);
         try {
             ValidateService.getInstance().add(user);
             response = "User was added.";

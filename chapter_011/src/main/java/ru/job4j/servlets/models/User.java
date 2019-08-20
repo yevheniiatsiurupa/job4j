@@ -16,12 +16,15 @@ public class User {
     private String password;
     private long createDate;
     private Role role;
+    private String city;
+    private String country;
 
     public User(String name) {
         this.name = name;
     }
 
-    public User(int id, String name, String login, String email, String password, long createDate, Role role) {
+    public User(int id, String name, String login, String email, String password,
+                long createDate, Role role) {
         this.id = id;
         this.name = name;
         this.login = login;
@@ -31,7 +34,8 @@ public class User {
         this.role = role;
     }
 
-    public User(String name, String login, String email, String password, long createDate, Role role) {
+    public User(String name, String login, String email, String password,
+                long createDate, Role role) {
         this.name = name;
         this.login = login;
         this.password = password;
@@ -68,12 +72,28 @@ public class User {
         return password;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
     public void setRole(Role role) {
         this.role = role;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 
     @Override

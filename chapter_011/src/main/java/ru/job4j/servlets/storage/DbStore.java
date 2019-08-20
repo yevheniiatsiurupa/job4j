@@ -37,9 +37,12 @@ public class DbStore implements Store {
             SOURCE.setMaxIdle(10);
             SOURCE.setMaxOpenPreparedStatements(100);
             this.createTable();
-            this.add(new User(
+            User admin = new User(
                     "Name1", "admin1", "email1",
-                    "adminpass", System.currentTimeMillis(), new Role("admin")));
+                    "adminpass", System.currentTimeMillis(), new Role("admin"));
+            admin.setCity("Moscow");
+            admin.setCountry("Russia");
+            this.add(admin);
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -64,6 +67,8 @@ public class DbStore implements Store {
                     + "login varchar(100) unique,"
                     + "email varchar(100) unique,"
                     + "password varchar(100),"
+                    + "city varchar(100),"
+                    + "country varchar(100),"
                     + "role varchar(100),"
                     + "time_of_creation bigint);");
         } catch (SQLException e) {
@@ -82,15 +87,17 @@ public class DbStore implements Store {
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
                 "insert into users_data "
-                        + "(name, login, email, password, role, time_of_creation) "
-                        + "values (?, ?, ?, ?, ?, ?);"
+                        + "(name, login, email, password, city, country, role, time_of_creation) "
+                        + "values (?, ?, ?, ?, ?, ?, ?, ?);"
         )) {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
             st.setString(3, user.getEmail());
             st.setString(4, user.getPassword());
-            st.setString(5, user.getRole().getName());
-            st.setLong(6, user.getCreateDate());
+            st.setString(5, user.getCity());
+            st.setString(6, user.getCountry());
+            st.setString(7, user.getRole().getName());
+            st.setLong(8, user.getCreateDate());
             st.executeUpdate();
 
         } catch (Exception e) {
@@ -107,16 +114,18 @@ public class DbStore implements Store {
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
                 "update users_data set name = ?, login = ?, email = ?, "
-                        + "password = ?, role = ?, time_of_creation = ? "
+                        + "password = ?, city = ?, country = ?, role = ?, time_of_creation = ? "
                         + "where id = ?;"
         )) {
             st.setString(1, user.getName());
             st.setString(2, user.getLogin());
             st.setString(3, user.getEmail());
             st.setString(4, user.getPassword());
-            st.setString(5, user.getRole().getName());
-            st.setLong(6, user.getCreateDate());
-            st.setInt(7, id);
+            st.setString(5, user.getCity());
+            st.setString(6, user.getCountry());
+            st.setString(7, user.getRole().getName());
+            st.setLong(8, user.getCreateDate());
+            st.setInt(9, id);
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
@@ -154,10 +163,15 @@ public class DbStore implements Store {
                 String login = rs.getString("login");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
+                String city = rs.getString("city");
+                String country = rs.getString("country");
                 String role = rs.getString("role");
                 long time = rs.getLong("time_of_creation");
                 int id = rs.getInt("id");
-                result.add(new User(id, name, login, email, password, time, new Role(role)));
+                User user = new User(id, name, login, email, password, time, new Role(role));
+                user.setCity(city);
+                user.setCountry(country);
+                result.add(user);
             }
 
         } catch (Exception e) {
@@ -180,10 +194,14 @@ public class DbStore implements Store {
                 String login = rs.getString("login");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
+                String city = rs.getString("city");
+                String country = rs.getString("country");
                 String role = rs.getString("role");
                 long time = rs.getLong("time_of_creation");
                 int idRes = rs.getInt("id");
                 result = new User(idRes, name, login, email, password, time, new Role(role));
+                result.setCity(city);
+                result.setCountry(country);
             }
 
         } catch (Exception e) {
@@ -205,10 +223,14 @@ public class DbStore implements Store {
                 String name = rs.getString("name");
                 String email = rs.getString("email");
                 String password = rs.getString("password");
+                String city = rs.getString("city");
+                String country = rs.getString("country");
                 String role = rs.getString("role");
                 long time = rs.getLong("time_of_creation");
                 int idRes = rs.getInt("id");
                 result = new User(idRes, name, login, email, password, time, new Role(role));
+                result.setCity(city);
+                result.setCountry(country);
             }
 
         } catch (Exception e) {
