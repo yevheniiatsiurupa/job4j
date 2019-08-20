@@ -1,6 +1,7 @@
 package ru.job4j.servlets.storage;
 
 import ru.job4j.servlets.models.User;
+import ru.job4j.servlets.validation.UserValidationException;
 
 import java.util.Collection;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class MemoryStore implements Store {
      * @param user пользователь для добавления.
      */
     @Override
-    public void add(User user) {
+    public void add(User user) throws UserValidationException {
         user.setId(this.nextId.getAndIncrement());
         users.put(user.getId(), user);
     }
@@ -66,7 +67,7 @@ public class MemoryStore implements Store {
      * @param id номер редактируемого пользователя.
      */
     @Override
-    public boolean update(User user, int id) {
+    public boolean update(User user, int id) throws UserValidationException {
         if (this.findById(id) == null) {
             return false;
         } else {

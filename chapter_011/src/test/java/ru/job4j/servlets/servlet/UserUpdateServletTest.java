@@ -32,7 +32,7 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(ValidateService.class)
 public class UserUpdateServletTest {
     @Test
-    public void whenUpdateUserThenNewUser() throws ServletException, IOException, UserValidationException {
+    public void whenUpdateUserThenNewUser() throws Exception {
         Validate validate = new ValidateStub();
         validate.add(new User("user1", "log1",
                 "email1", "pass1",

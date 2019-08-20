@@ -1,6 +1,7 @@
 package ru.job4j.servlets.storage;
 
 import ru.job4j.servlets.models.User;
+import ru.job4j.servlets.validation.UserValidationException;
 
 import java.util.Collection;
 
@@ -11,8 +12,8 @@ import java.util.Collection;
  */
 
 public interface Store {
-    void add(User user);
-    boolean update(User user, int id);
+    void add(User user) throws UserValidationException;
+    boolean update(User user, int id) throws UserValidationException;
     boolean delete(int id);
     Collection<User> findAll();
     User findById(int id);

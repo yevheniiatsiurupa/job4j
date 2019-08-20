@@ -3,6 +3,7 @@ package ru.job4j.servlets.storage;
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.servlets.models.Role;
 import ru.job4j.servlets.models.User;
+import ru.job4j.servlets.validation.UserValidationException;
 
 import java.io.InputStream;
 import java.sql.*;
@@ -18,6 +19,7 @@ import java.util.Properties;
 public class DbStore implements Store {
     private static final BasicDataSource SOURCE = new BasicDataSource();
     private static final DbStore INSTANCE = new DbStore();
+    private static boolean firstCall = true;
 
     /**
      * Конструктор.
@@ -25,7 +27,7 @@ public class DbStore implements Store {
      * Пул соединений реализован с помощью объекта BasicDataSource.
      * Создается таблица в базе данных для храниения информации о пользователях.
      */
-    public DbStore() {
+    private DbStore() {
         try (InputStream in = DbStore.class.getClassLoader().getResourceAsStream("app.properties")) {
             Properties config = new Properties();
             config.load(in);
@@ -37,12 +39,15 @@ public class DbStore implements Store {
             SOURCE.setMaxIdle(10);
             SOURCE.setMaxOpenPreparedStatements(100);
             this.createTable();
-            User admin = new User(
-                    "Name1", "admin1", "email1",
-                    "adminpass", System.currentTimeMillis(), new Role("admin"));
-            admin.setCity("Moscow");
-            admin.setCountry("Russia");
-            this.add(admin);
+            if (firstCall) {
+                User admin = new User(
+                        "Name1", "admin1", "email1",
+                        "adminpass", System.currentTimeMillis(), new Role("admin"));
+                admin.setCity("Moscow");
+                admin.setCountry("Russia");
+                this.add(admin);
+                firstCall = false;
+            }
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -83,7 +88,7 @@ public class DbStore implements Store {
      * @param user добавляемый пользователь.
      */
     @Override
-    public void add(User user) {
+    public void add(User user) throws UserValidationException {
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
                 "insert into users_data "
@@ -101,7 +106,7 @@ public class DbStore implements Store {
             st.executeUpdate();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new UserValidationException("Cannot add User. Login is used.");
         }
     }
 
@@ -109,7 +114,7 @@ public class DbStore implements Store {
      * Метод создает и выполняет запрос на редактирование пользователя в БД.
      */
     @Override
-    public boolean update(User user, int id) {
+    public boolean update(User user, int id) throws UserValidationException {
         boolean result = false;
         try (Connection connection = SOURCE.getConnection();
              PreparedStatement st = connection.prepareStatement(
@@ -129,7 +134,7 @@ public class DbStore implements Store {
             st.executeUpdate();
             result = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new UserValidationException("Cannot update User. Login is used.");
         }
         return result;
     }
