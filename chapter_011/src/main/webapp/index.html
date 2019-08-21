@@ -9,6 +9,53 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: './json',
+                dataType: 'json',
+                success: function(data, status, settings){
+                    addUsers(data)
+                }});
+        });
+    </script>
+
+    <script>
+        function deleteRows() {
+            var parent = document.getElementById('rows');
+            var nodes = parent.childNodes;
+            for (var i = 0; i < nodes.length; i++) {
+                var elem = nodes[i];
+                parent.removeChild(elem);
+                i--;
+            }
+        }
+
+        function addUsers (data) {
+            deleteRows();
+            var arr = data['users'];
+            if (arr !== null) {
+                for (i = 0; i < arr.length; i++) {
+                    var name = arr[i]['name'];
+                    var surname = arr[i]['surname'];
+                    var desc = arr[i]['desc'];
+
+                    var row = document.createElement('tr');
+                    var data_name = document.createElement('td');
+                    data_name.innerHTML = name;
+                    var data_surname = document.createElement('td');
+                    data_surname.innerHTML = surname;
+                    var data_desc = document.createElement('td');
+                    data_desc.innerHTML = desc;
+                    document.getElementById('rows').appendChild(row);
+                    row.appendChild(data_name);
+                    row.appendChild(data_surname);
+                    row.appendChild(data_desc);
+                }
+            }
+        }
+    </script>
+
+    <script>
         function createUser() {
             var name = $('#name').val();
             var surname = $('#surname').val();
@@ -31,7 +78,7 @@
                     }
                 },
                 success: function (data, status, settings) {
-                    addRow();
+                    addUsers(data);
                 }
             })
         }
@@ -55,17 +102,9 @@
             return result;
         }
     </script>
-
-    <script>
-        function addRow() {
-            var name = $('#name').val();
-            var surname = $('#surname').val();
-            var desc = $('#desc').val();
-            $('#table tr:last').after('<tr><td>' + name +'</td><td>' + surname +'</td><td>' + desc +'</td></tr>');
-            return false;
-        }
-    </script>
 </head>
+
+
 <body>
 <div class="container-fluid">
     <h1>My First Bootstrap Page</h1>
@@ -121,17 +160,7 @@
                 <th>Description</th>
             </tr>
             </thead>
-            <tbody>
-            <tr>
-                <td>John</td>
-                <td>Doe</td>
-                <td>desc1</td>
-            </tr>
-            <tr>
-                <td>Mary</td>
-                <td>Moe</td>
-                <td>desc2</td>
-            </tr>
+            <tbody id="rows">
             </tbody>
         </table>
     </div>

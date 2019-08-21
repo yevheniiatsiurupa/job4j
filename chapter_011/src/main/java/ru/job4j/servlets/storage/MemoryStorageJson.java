@@ -1,8 +1,10 @@
 package ru.job4j.servlets.storage;
 
 
+import ru.job4j.servlets.models.User;
 import ru.job4j.servlets.models.UserJson;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -22,6 +24,7 @@ public class MemoryStorageJson {
     private final AtomicInteger nextId = new AtomicInteger(0);
 
     private MemoryStorageJson() {
+        this.add(new UserJson("name1", "surname1", "desc"));
     }
 
     public static MemoryStorageJson getInstance() {
@@ -36,5 +39,9 @@ public class MemoryStorageJson {
     public void add(UserJson user) {
         user.setId(this.nextId.getAndIncrement());
         users.put(user.getId(), user);
+    }
+
+    public Collection<UserJson> findAll() {
+        return this.users.values();
     }
 }
