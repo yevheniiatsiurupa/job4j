@@ -63,6 +63,7 @@
         <module>chapter_010</module>
         <module>chapter_011</module>
         <module>chapter_020</module>
+        <module>chapter_012</module>
     </modules>
     <build>
         <plugins>

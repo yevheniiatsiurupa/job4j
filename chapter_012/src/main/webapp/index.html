@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+    <title>Booking</title>
+
+    <script>
+        setTimeout(function () {
+            location.reload();
+        }, 5 * 60 * 1000);
+    </script>
+
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                url: './hall',
+                dataType: 'json',
+                success: function(data, status, settings){
+                    createTable(data);
+                    fillTable(data);
+                    console.log(data);
+                }});
+        });
+    </script>
+
+    <script>
+        function createTable(data) {
+            var rows = data['rows'];
+            var places = data['places'];
+            for (i = 1; i <= places; i++) {
+                var place = document.createElement('th');
+                place.innerHTML = '' + i;
+                document.getElementById('header').appendChild(place);
+            }
+            for (j = 1; j <= rows; j++) {
+                var row = document.createElement('tr');
+                var elem = document.createElement('th');
+                elem.innerHTML = '' + j;
+                document.getElementById('tableBody').appendChild(row);
+                row.appendChild(elem);
+                for (k = 1; k <= places; k++) {
+                    var cell = document.createElement('td');
+                    row.appendChild(cell);
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function fillTable(data) {
+            var seats = data['seats'];
+            for (i = 0; i < seats.length; i++) {
+                var seat = seats[i];
+                var row = seat['row'];
+                var place = seat['place'];
+                var placeCorr = place + 1;
+                var stat = seat['status'];
+                var price = seat['price'];
+                var id = seat['id'];
+                var inf = id + '-' + price;
+                var cell = $('#tableBody tr:nth-child('+ row + ') td:nth-child(' + placeCorr + ')' );
+
+                if (stat === 'free') {
+                    var inp = '<input type="radio" name="seat" value="' + inf + '" id="' + id + '"/>';
+                    cell.append(inp);
+
+                    var lab = document.createElement('label');
+                    lab.setAttribute('for', id);
+                    lab.innerHTML = '  Ряд: ' + row + ", Место: " + place;
+                    cell.append(lab);
+
+                    var priceLab = document.createElement('p');
+                    priceLab.innerHTML = "  Цена: " + price + 'руб.';
+                    cell.append(priceLab);
+                } else {
+                    cell.html('Забронировано.');
+                }
+            }
+        }
+    </script>
+
+    <script>
+        function toPayment() {
+            var val =  $('input[name=seat]:checked').val();
+            var id = $('input[name=seat]:checked').attr('id');
+            console.log(val);
+            if (val === undefined) {
+                alert('Выберите место.');
+            } else {
+                var rowPlace = val.split('-');
+                var row = rowPlace[0];
+                var place = rowPlace[1];
+                var price = rowPlace[2];
+                sessionStorage.setItem('row', row);
+                sessionStorage.setItem('place', place);
+                sessionStorage.setItem('id', id);
+                sessionStorage.setItem('price', price);
+                window.location.href = 'payment.html'
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div class="row pt-3">
+        <h4>
+            Бронирование места на сеанс
+        </h4>
+        <table class="table table-bordered" id="table">
+            <thead>
+            <tr id="header">
+                <th style="width: 120px;">Ряд / Место</th>
+            </tr>
+            </thead>
+            <tbody id="tableBody">
+            </tbody>
+        </table>
+    </div>
+    <div class="row float-right">
+        <button type="button" class="btn btn-success" onclick="toPayment()">Оплатить</button>
+    </div>
+</div>
+</body>
+</html>
