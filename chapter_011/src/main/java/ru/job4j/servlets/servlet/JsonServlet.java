@@ -1,6 +1,8 @@
 package ru.job4j.servlets.servlet;
 
+import ru.job4j.servlets.models.User;
 import ru.job4j.servlets.models.UserJson;
+import ru.job4j.servlets.models.UsersJson;
 import ru.job4j.servlets.storage.MemoryStorageJson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -8,10 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringReader;
+import java.io.*;
 import java.util.Collection;
 
 public class JsonServlet extends HttpServlet {
@@ -20,9 +19,12 @@ public class JsonServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Collection<UserJson> users = this.storage.findAll();
+        UsersJson us = new UsersJson(users);
         ObjectMapper mapper = new ObjectMapper();
-        String result = mapper.writeValueAsString(users);
-        String json = "{\"users\" : " + result + "}";
+        StringWriter sw = new StringWriter();
+        mapper.writeValue(sw, us);
+        String json = sw.toString();
+
         resp.setContentType("text/json");
         PrintWriter pw = new PrintWriter(resp.getOutputStream());
         pw.append(json);
