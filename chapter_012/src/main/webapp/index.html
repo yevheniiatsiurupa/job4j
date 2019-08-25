@@ -18,12 +18,15 @@
 
     <title>Booking</title>
 
+    <!--  Script reloads the page every 5 minutes.  -->
     <script>
         setTimeout(function () {
             location.reload();
         }, 5 * 60 * 1000);
     </script>
 
+    <!--  Script send get request to HallServlet in order to get json object with
+     information about seats. On success creates the table and fills it with corresponding seats.-->
     <script>
         $(document).ready(function(){
             $.ajax({
@@ -37,6 +40,7 @@
         });
     </script>
 
+    <!--  Script gets number of rows and places by keys from data. Creates table with headers-->
     <script>
         function createTable(data) {
             var rows = data['rows'];
@@ -60,6 +64,9 @@
         }
     </script>
 
+    <!--  Script fills the table with information about the seats. It gets seats array from data.
+    For each seat information is found and filled in corresponding cell in the table. If seat is
+    free then radio button is created for it. In other case cell is filled with message 'Booked'. -->
     <script>
         function fillTable(data) {
             var seats = data['seats'];
@@ -93,11 +100,12 @@
         }
     </script>
 
+    <!--  Script checks that seat was chosen, gets info about the chosen seat,
+    creates items in session storage with info about the seat and redirects the page. -->
     <script>
         function toPayment() {
             var val =  $('input[name=seat]:checked').val();
             var id = $('input[name=seat]:checked').attr('id');
-            console.log(val);
             if (val === undefined) {
                 alert('Выберите место.');
             } else {

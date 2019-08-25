@@ -1,5 +1,16 @@
 package ru.job4j.cinema.models;
 
+import java.util.Objects;
+
+/**
+ * Класс представляет место в зале.
+ * Место имеет номер места, ряда, номер Id, цену и статус.
+ * Статус по умолчанию - free.
+ * Id места в форме "ряд-место", например, "2-3".
+ * @author Evgeniya Tsiurupa
+ * @version 1.0
+ * @since 25/08/2019
+ */
 public class HallPlace {
     private int row;
     private int place;
@@ -40,5 +51,22 @@ public class HallPlace {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        HallPlace hallPlace = (HallPlace) o;
+        return Objects.equals(id, hallPlace.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

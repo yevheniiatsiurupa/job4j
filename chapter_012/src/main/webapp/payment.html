@@ -16,7 +16,9 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
+<!-- Script gets items from session storage and uses them to show the info at the page. -->
 <script>
     $(document).ready(function () {
         var row = sessionStorage.getItem('row');
@@ -26,6 +28,8 @@
         $("#message").text(mes);
     });
 </script>
+
+<!-- Script checks whether the form is filled correctly. -->
 <script>
     function validate() {
         var result = true;
@@ -40,12 +44,51 @@
         return result;
     }
 </script>
-<div class="container">
+
+<!-- Script sends post request to HallServlet, on success adds item to session storage with
+ answer from response and redirects the page.-->
+<script>
+    function sendRequest(msg) {
+        $.ajax({
+            type:'POST',
+            url:'./hall',
+            data: msg,
+            success: function(data, status, settings) {
+                var answer = data['answer'];
+                sessionStorage.setItem('answer', answer);
+                window.location.href = 'result.html';
+            }
+        });
+    }
+</script>
+
+<!-- Script gets username and phone values from the form after it's filled and id
+ from session storage. It creates json object and sends it in request to HallServlet using
+ function sendRequest. -->
+<script>
+    function sendForm() {
+        var valid = validate();
+        if (valid) {
+            var username = $('#username').val();
+            var phone = $('#phone').val();
+            var id = sessionStorage.getItem('id');
+            var toJson = {
+                username: username,
+                phone: phone,
+                id: id
+            };
+            var msg = JSON.stringify(toJson);
+            sendRequest(msg);
+        }
+    }
+</script>
+
+<div class="container" id="main">
     <div class="row pt-3">
         <h3 id="message"></h3>
     </div>
     <div class="row">
-        <form action="./hall" method="post" >
+        <form id="form">
             <div class="form-group">
                 <label for="username">ФИО</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="ФИО">
@@ -54,12 +97,7 @@
                 <label for="phone">Номер телефона</label>
                 <input type="text" class="form-control" id="phone"  name="phone" placeholder="Номер телефона">
             </div>
-            <input type="hidden" name="id" id="hiddenInput"/>
-            <script>
-                var idValue = sessionStorage.getItem('id');
-                document.getElementById('hiddenInput').value = idValue;
-            </script>
-            <button type="submit" class="btn btn-success" onclick="return validate()">Оплатить</button>
+            <button type="button" class="btn btn-success" onclick="return sendForm()">Оплатить</button>
         </form>
     </div>
 </div>
